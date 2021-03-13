@@ -1,7 +1,12 @@
 import React from "react";
+import Simulator from "./components/Simulator";
 
 function App() {
-  return <div className="App">Hello, world!</div>;
+  return (
+    <div className="App">
+      <Simulator />
+    </div>
+  );
 }
 
 export default App;
