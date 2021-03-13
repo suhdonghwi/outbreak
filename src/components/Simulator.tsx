@@ -4,14 +4,18 @@ import { Viewport } from "pixi-viewport";
 import * as PIXI from "pixi.js";
 
 import Community from "../objects/Community";
-import { layout, randomInteger } from "../utils";
-import params from "../parameters";
+import { layout } from "../utils";
 
 const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
-export default function Simulator() {
+interface SimulatorProps {
+  communityCount: number;
+}
+
+export default function Simulator({ communityCount }: SimulatorProps) {
   const ref = useRef<HTMLDivElement>(null);
+
   const appRef = useRef(
     new PIXI.Application({
       backgroundColor: 0x212529,
@@ -20,30 +24,27 @@ export default function Simulator() {
       antialias: true,
     })
   );
+  const app = appRef.current;
+
+  const viewportRef = useRef(
+    new Viewport({
+      screenWidth: window.innerWidth,
+      screenHeight: window.innerHeight,
+      interaction: app.renderer.plugins.interaction,
+    })
+  );
+  const viewport = viewportRef.current;
 
   useEffect(() => {
-    const app = appRef.current;
-
     if (ref.current !== null) {
       ref.current.appendChild(app.view);
       app.start();
     }
 
-    const viewport = new Viewport({
-      screenWidth: window.innerWidth,
-      screenHeight: window.innerHeight,
-      interaction: app.renderer.plugins.interaction,
-    });
-
     app.stage.addChild(viewport);
     viewport.drag().pinch().wheel().decelerate();
 
-    const comms = layout(window.innerWidth, 350, 350, 4).map(
-      (r) => new Community(app, r, 50)
-    );
-    comms[0].people[0].infected = true;
-    viewport.addChild(...comms);
-
+    /*
     setInterval(() => {
       const sum = comms.map((c) => c.countAlive()).reduce((a, b) => a + b);
       if (sum === 0) return;
@@ -65,6 +66,7 @@ export default function Simulator() {
 
       comms[comm1].migrate(index, comms[comm2]);
     }, params.migrateInterval * 1000);
+    */
 
     function onResize() {
       app.renderer.resize(window.innerWidth, window.innerHeight);
@@ -75,7 +77,16 @@ export default function Simulator() {
       window.removeEventListener("resize", onResize);
       app.destroy(true, true);
     };
-  }, []);
+  }, [app, viewport]);
+
+  useEffect(() => {
+    viewport.removeChildren();
+
+    const comms = layout(window.innerWidth, 350, 350, communityCount).map(
+      (r) => new Community(app, r)
+    );
+    viewport.addChild(...comms);
+  }, [communityCount, app, viewport]);
 
   return <div ref={ref} />;
 }
