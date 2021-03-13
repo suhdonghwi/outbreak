@@ -12,14 +12,17 @@ const gameHeight = window.innerHeight;
 
 export default function Simulator() {
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const app = new PIXI.Application({
+  const appRef = useRef(
+    new PIXI.Application({
       backgroundColor: 0x212529,
       width: gameWidth,
       height: gameHeight,
       antialias: true,
-    });
+    })
+  );
+
+  useEffect(() => {
+    const app = appRef.current;
 
     if (ref.current !== null) {
       ref.current.appendChild(app.view);
