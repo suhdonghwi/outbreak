@@ -27,14 +27,11 @@ function App() {
 
   function onAddPopulation(n: number) {
     for (const comm of comms) {
-      const newPopulation = [];
       for (let i = 0; i < n; i++) {
-        newPopulation.push(
+        comm.addPopulation(
           new Person(app, comm.getRandomPoint(), Math.random() * 2 * Math.PI, 0)
         );
       }
-
-      comm.addPeople(newPopulation);
     }
   }
 

@@ -7,15 +7,15 @@ import params from "../parameters";
 import { distance } from "../utils";
 
 export default class Community extends PIXI.Graphics {
-  private _people: Person[];
+  private _population: Person[];
   private _drawWidth: number;
   private _drawHeight: number;
 
   readonly offset = params.borderWidth + params.personRadius;
 
   private infectOther(person: Person) {
-    for (let i = 0; i < this.people.length; i++) {
-      const other = this.people[i];
+    for (let i = 0; i < this.population.length; i++) {
+      const other = this.population[i];
       if (other.infected || other.status !== "alive" || person === other)
         continue;
 
@@ -38,11 +38,11 @@ export default class Community extends PIXI.Graphics {
     this.y = rect.y;
     this.draw();
 
-    this._people = [];
+    this._population = [];
 
     app.ticker.add(() => {
-      for (let i = 0; i < this.people.length; i++) {
-        const person = this.people[i];
+      for (let i = 0; i < this.population.length; i++) {
+        const person = this.population[i];
         if (person.status === "removed") continue;
         //if (person.migrating) continue;
         //console.log(i);
@@ -83,24 +83,27 @@ export default class Community extends PIXI.Graphics {
     );
   }
 
-  get people(): Person[] {
-    return this._people;
+  get population(): Person[] {
+    return this._population;
   }
 
-  addPeople(people: Person[]): void {
-    this.people.push(...people);
-    this.addChild(...people);
+  addPopulation(...population: Person[]): void {
+    this.population.push(...population);
+    this.addChild(...population);
   }
 
   countAlive(): number {
-    return this.people.filter((p) => p.status === "alive").length;
+    return this.population.filter((p) => p.status === "alive").length;
   }
 
   migrate(index: number, to: Community): void {
-    if (index > this.people.length - 1 || this.people[index].status !== "alive")
+    if (
+      index > this.population.length - 1 ||
+      this.population[index].status !== "alive"
+    )
       return;
 
-    const person = this.people.splice(index, 1)[0],
+    const person = this.population.splice(index, 1)[0],
       targetLocalPos = to.getRandomPoint(),
       targetPos = this.toLocal(to.toGlobal(new PIXI.Point(0, 0)));
 
@@ -110,7 +113,7 @@ export default class Community extends PIXI.Graphics {
       ease: "power3.inOut",
       onComplete: () => {
         person.position.set(targetLocalPos.x, targetLocalPos.y);
-        to.addPeople([person]);
+        to.addPopulation(person);
       },
       duration: 1,
     });
