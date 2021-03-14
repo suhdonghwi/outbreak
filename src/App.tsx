@@ -25,10 +25,23 @@ function App() {
     (r) => new Community(app, r)
   );
 
+  function onAddPopulation(n: number) {
+    for (const comm of comms) {
+      const newPopulation = [];
+      for (let i = 0; i < n; i++) {
+        newPopulation.push(
+          new Person(app, comm.getRandomPoint(), Math.random() * 2 * Math.PI, 0)
+        );
+      }
+
+      comm.addPeople(newPopulation);
+    }
+  }
+
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
-      <ConfigModal />
+      <ConfigModal onAddPopulation={onAddPopulation} />
     </div>
   );
 }

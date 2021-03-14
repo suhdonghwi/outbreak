@@ -63,7 +63,13 @@ const Button = styled.button`
   }
 `;
 
-export default function ConfigModal() {
+interface ConfigModalProps {
+  onAddPopulation: (n: number) => void;
+}
+
+export default function ConfigModal({ onAddPopulation }: ConfigModalProps) {
+  const populationNumbers = [1, 5, 10, 50, 100];
+
   return (
     <ModalContainer>
       <Title>
@@ -83,11 +89,9 @@ export default function ConfigModal() {
 
         <SettingsName>Add population</SettingsName>
         <SettingsProperty>
-          <Button>1</Button>
-          <Button>5</Button>
-          <Button>10</Button>
-          <Button>50</Button>
-          <Button>100</Button>
+          {populationNumbers.map((p) => (
+            <Button onClick={() => onAddPopulation(p)}>{p}</Button>
+          ))}
         </SettingsProperty>
       </SettingsGrid>
     </ModalContainer>
