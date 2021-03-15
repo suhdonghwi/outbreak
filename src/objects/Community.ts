@@ -7,8 +7,11 @@ import params from "../parameters";
 import { distance } from "../utils";
 import SettingsOverlay from "./SettingsOverlay";
 
+type CommunityStatus = "configure" | "selected" | "normal";
 export default class Community extends PIXI.Container {
   private _border: PIXI.Graphics;
+  private _status: CommunityStatus;
+  private _id: number;
 
   private _population: Person[];
   private _drawWidth: number;
@@ -33,10 +36,18 @@ export default class Community extends PIXI.Container {
     }
   }
 
-  constructor(app: PIXI.Application, rect: PIXI.Rectangle) {
+  constructor(
+    app: PIXI.Application,
+    rect: PIXI.Rectangle,
+    id: number,
+    onSelect: (c: Community) => void
+  ) {
     super();
 
     this._population = [];
+    this._status = "configure";
+    this._id = id;
+
     this.sortableChildren = true;
 
     this._drawWidth = rect.width;
@@ -66,12 +77,16 @@ export default class Community extends PIXI.Container {
 
     const duration = 0.1;
     this.on("mouseover", () => {
-      gsap.to(this._overlay, { alpha: 0.95, duration });
+      if (this._status === "configure")
+        gsap.to(this._overlay, { alpha: 0.8, duration });
     });
 
     this.on("mouseout", () => {
-      gsap.to(this._overlay, { alpha: 0, duration });
+      if (this._status === "configure")
+        gsap.to(this._overlay, { alpha: 0, duration });
     });
+
+    this.on("click", () => onSelect(this));
 
     app.ticker.add(() => {
       for (let i = 0; i < this.population.length; i++) {
@@ -116,6 +131,10 @@ export default class Community extends PIXI.Container {
     );
   }
 
+  get id(): number {
+    return this._id;
+  }
+
   get population(): Person[] {
     return this._population;
   }
@@ -149,16 +168,6 @@ export default class Community extends PIXI.Container {
         to.addPopulation(person);
       },
       duration: 1,
-    });
-  }
-
-  reposition(rect: PIXI.Rectangle): void {
-    gsap.to(this, {
-      _drawWidth: rect.width,
-      _drawHeight: rect.height,
-      x: rect.x,
-      y: rect.y,
-      onUpdate: () => this.draw(),
     });
   }
 }

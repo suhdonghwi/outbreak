@@ -82,7 +82,7 @@ const UnselectedBox = styled.div`
 
 interface ConfigModalProps {
   onAddPopulation: (n: number) => void;
-  selectedCommunity?: Community;
+  selectedCommunity: Community | null;
 }
 
 export default function ConfigModal({
@@ -116,11 +116,9 @@ export default function ConfigModal({
 
       <Title>
         <FaUsers className={IconCss} />
-        Community settings
+        Community {selectedCommunity && selectedCommunity.id} settings
       </Title>
-      {true ? (
-        <UnselectedBox>Click a community to configure...</UnselectedBox>
-      ) : (
+      {selectedCommunity !== null ? (
         <SettingsGrid>
           <SettingsName>Add population</SettingsName>
           <SettingsProperty>
@@ -131,6 +129,8 @@ export default function ConfigModal({
             ))}
           </SettingsProperty>
         </SettingsGrid>
+      ) : (
+        <UnselectedBox>Click a community to configure</UnselectedBox>
       )}
     </ModalContainer>
   );

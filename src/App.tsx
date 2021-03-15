@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useMemo, useState } from "react";
 import * as PIXI from "pixi.js";
 
 import ConfigModal from "./components/ConfigModal";
@@ -11,17 +11,27 @@ const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
 function App() {
-  const appRef = useRef(
-    new PIXI.Application({
-      backgroundColor: 0x212529,
-      width: gameWidth,
-      height: gameHeight,
-      antialias: true,
-    })
+  const app = useMemo(
+    () =>
+      new PIXI.Application({
+        backgroundColor: 0x212529,
+        width: gameWidth,
+        height: gameHeight,
+        antialias: true,
+      }),
+    []
   );
-  const app = appRef.current;
-  const comms = layout(window.innerWidth, 350, 350, 9).map(
-    (r) => new Community(app, r)
+
+  const comms = useMemo(
+    () =>
+      layout(window.innerWidth, 350, 350, 9).map(
+        (r, i) => new Community(app, r, i + 1, onSelectCommunity)
+      ),
+    [app]
+  );
+
+  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
+    null
   );
 
   function onAddPopulation(n: number) {
@@ -34,10 +44,17 @@ function App() {
     }
   }
 
+  function onSelectCommunity(c: Community) {
+    setSelectedCommunity(c);
+  }
+
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
-      <ConfigModal onAddPopulation={onAddPopulation} />
+      <ConfigModal
+        onAddPopulation={onAddPopulation}
+        selectedCommunity={selectedCommunity}
+      />
     </div>
   );
 }

@@ -13,9 +13,9 @@ export default class SettingsOverlay extends PIXI.Graphics {
 
     const textStyle = new PIXI.TextStyle({
       fill: "white",
-      align: "center",
+      fontSize: 70,
     });
-    const text = new PIXI.Text("Click to\nConfigure", textStyle);
+    const text = new PIXI.Text("🛠️", textStyle);
     text.x = rect.width / 2 - text.width / 2;
     text.y = rect.height / 2 - text.height / 2;
     text.resolution = 1.5;
