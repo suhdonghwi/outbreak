@@ -5,11 +5,15 @@ import gsap from "gsap";
 
 import params from "../parameters";
 import { distance } from "../utils";
+import SettingsOverlay from "./SettingsOverlay";
 
-export default class Community extends PIXI.Graphics {
+export default class Community extends PIXI.Container {
+  private _border: PIXI.Graphics;
+
   private _population: Person[];
   private _drawWidth: number;
   private _drawHeight: number;
+  private _overlay: SettingsOverlay;
 
   readonly offset = params.borderWidth + params.personRadius;
 
@@ -32,18 +36,42 @@ export default class Community extends PIXI.Graphics {
   constructor(app: PIXI.Application, rect: PIXI.Rectangle) {
     super();
 
+    this._population = [];
+    this.sortableChildren = true;
+
     this._drawWidth = rect.width;
     this._drawHeight = rect.height;
     this.x = rect.x;
     this.y = rect.y;
-    this.draw();
 
-    this._population = [];
+    this._border = new PIXI.Graphics();
+    this.draw();
+    this.addChild(this._border);
+
+    this._overlay = new SettingsOverlay(
+      app,
+      new PIXI.Rectangle(
+        params.borderWidth,
+        params.borderWidth,
+        rect.width - params.borderWidth * 2,
+        rect.height - params.borderWidth * 2
+      )
+    );
+    this._overlay.alpha = 0;
+    this._overlay.zIndex = 1;
+    this.addChild(this._overlay);
 
     this.interactive = true;
     this.hitArea = new PIXI.Rectangle(0, 0, rect.width, rect.height);
-    console.log(this.getBounds());
-    this.on("mouseover", () => console.log("what"));
+
+    const duration = 0.1;
+    this.on("mouseover", () => {
+      gsap.to(this._overlay, { alpha: 0.95, duration });
+    });
+
+    this.on("mouseout", () => {
+      gsap.to(this._overlay, { alpha: 0, duration });
+    });
 
     app.ticker.add(() => {
       for (let i = 0; i < this.population.length; i++) {
@@ -76,10 +104,9 @@ export default class Community extends PIXI.Graphics {
   }
 
   draw(): void {
-    this.clear();
-    this.lineStyle(params.borderWidth * 2, 0xffffff);
-    this.drawRect(0, 0, this._drawWidth, this._drawHeight);
-    this.draw();
+    this._border.clear();
+    this._border.lineStyle(params.borderWidth * 2, 0xffffff);
+    this._border.drawRect(0, 0, this._drawWidth, this._drawHeight);
   }
 
   getRandomPoint(): PIXI.Point {
