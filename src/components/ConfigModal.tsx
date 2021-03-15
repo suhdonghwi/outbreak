@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/css";
 
-import { FaUsers } from "react-icons/fa";
+import { FaUsers, FaGlobeAmericas } from "react-icons/fa";
+import Community from "../objects/Community";
 
 const ModalContainer = styled.div`
   position: absolute;
@@ -21,8 +22,12 @@ const ModalContainer = styled.div`
 `;
 
 const Title = styled.h1`
-  margin: 0 0 1.5rem 0;
+  margin: 0 0 1.2rem 0;
+  &:not(:first-of-type) {
+    margin-top: 2rem;
+  }
 
+  font-size: 1.8rem;
   display: flex;
   align-items: center;
 `;
@@ -63,21 +68,33 @@ const Button = styled.button`
   }
 `;
 
+const IconCss = css`
+  margin-right: 0.8rem;
+`;
+
+const UnselectedBox = styled.div`
+  color: #e9ecef;
+  border: 1px dashed #e9ecef;
+  border-radius: 5px;
+  text-align: center;
+  padding: 1.2rem;
+`;
+
 interface ConfigModalProps {
   onAddPopulation: (n: number) => void;
+  selectedCommunity?: Community;
 }
 
-export default function ConfigModal({ onAddPopulation }: ConfigModalProps) {
+export default function ConfigModal({
+  onAddPopulation,
+  selectedCommunity,
+}: ConfigModalProps) {
   const populationNumbers = [1, 5, 10, 50, 100];
 
   return (
     <ModalContainer>
       <Title>
-        <FaUsers
-          className={css`
-            margin-right: 0.8rem;
-          `}
-        />
+        <FaGlobeAmericas className={IconCss} />
         Environment settings
       </Title>
 
@@ -95,16 +112,26 @@ export default function ConfigModal({ onAddPopulation }: ConfigModalProps) {
             </Button>
           ))}
         </SettingsProperty>
-
-        <SettingsName>Add population to community</SettingsName>
-        <SettingsProperty>
-          {populationNumbers.map((p) => (
-            <Button key={p} onClick={() => onAddPopulation(p)}>
-              {p}
-            </Button>
-          ))}
-        </SettingsProperty>
       </SettingsGrid>
+
+      <Title>
+        <FaUsers className={IconCss} />
+        Community settings
+      </Title>
+      {true ? (
+        <UnselectedBox>Click a community to configure...</UnselectedBox>
+      ) : (
+        <SettingsGrid>
+          <SettingsName>Add population</SettingsName>
+          <SettingsProperty>
+            {populationNumbers.map((p) => (
+              <Button key={p} onClick={() => onAddPopulation(p)}>
+                {p}
+              </Button>
+            ))}
+          </SettingsProperty>
+        </SettingsGrid>
+      )}
     </ModalContainer>
   );
 }

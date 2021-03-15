@@ -28,7 +28,7 @@ function App() {
     for (const comm of comms) {
       for (let i = 0; i < n; i++) {
         comm.addPopulation(
-          new Person(app, comm.getRandomPoint(), Math.random() * 2 * Math.PI, 0)
+          new Person(app, comm.getRandomPoint(), Math.random() * 2 * Math.PI, 2)
         );
       }
     }
