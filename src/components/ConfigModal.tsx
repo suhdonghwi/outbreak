@@ -81,11 +81,13 @@ const UnselectedBox = styled.div`
 `;
 
 interface ConfigModalProps {
-  onAddPopulation: (n: number) => void;
+  onAddPopulationToAll: (n: number) => void;
+  onAddPopulation: (n: number, c: Community) => void;
   selectedCommunity: Community | null;
 }
 
 export default function ConfigModal({
+  onAddPopulationToAll,
   onAddPopulation,
   selectedCommunity,
 }: ConfigModalProps) {
@@ -107,7 +109,7 @@ export default function ConfigModal({
         <SettingsName>Add population to all</SettingsName>
         <SettingsProperty>
           {populationNumbers.map((p) => (
-            <Button key={p} onClick={() => onAddPopulation(p)}>
+            <Button key={p} onClick={() => onAddPopulationToAll(p)}>
               {p}
             </Button>
           ))}
@@ -123,7 +125,10 @@ export default function ConfigModal({
           <SettingsName>Add population</SettingsName>
           <SettingsProperty>
             {populationNumbers.map((p) => (
-              <Button key={p} onClick={() => onAddPopulation(p)}>
+              <Button
+                key={p}
+                onClick={() => onAddPopulation(p, selectedCommunity)}
+              >
                 {p}
               </Button>
             ))}

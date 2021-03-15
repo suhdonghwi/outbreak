@@ -34,13 +34,21 @@ function App() {
     null
   );
 
-  function onAddPopulation(n: number) {
+  function onAddPopulationToAll(n: number) {
     for (const comm of comms) {
       for (let i = 0; i < n; i++) {
         comm.addPopulation(
-          new Person(app, comm.getRandomPoint(), Math.random() * 2 * Math.PI, 2)
+          new Person(app, comm.getRandomPoint(), Math.random() * 2 * Math.PI, 0)
         );
       }
+    }
+  }
+
+  function onAddPopulation(n: number, c: Community) {
+    for (let i = 0; i < n; i++) {
+      c.addPopulation(
+        new Person(app, c.getRandomPoint(), Math.random() * 2 * Math.PI, 0)
+      );
     }
   }
 
@@ -52,6 +60,7 @@ function App() {
     <div className="App">
       <Simulator app={app} communities={comms} />
       <ConfigModal
+        onAddPopulationToAll={onAddPopulationToAll}
         onAddPopulation={onAddPopulation}
         selectedCommunity={selectedCommunity}
       />
