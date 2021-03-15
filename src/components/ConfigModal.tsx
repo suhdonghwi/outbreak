@@ -87,10 +87,21 @@ export default function ConfigModal({ onAddPopulation }: ConfigModalProps) {
           <p>hello</p>
         </SettingsProperty>
 
-        <SettingsName>Add population</SettingsName>
+        <SettingsName>Add population to all</SettingsName>
         <SettingsProperty>
           {populationNumbers.map((p) => (
-            <Button onClick={() => onAddPopulation(p)}>{p}</Button>
+            <Button key={p} onClick={() => onAddPopulation(p)}>
+              {p}
+            </Button>
+          ))}
+        </SettingsProperty>
+
+        <SettingsName>Add population to community</SettingsName>
+        <SettingsProperty>
+          {populationNumbers.map((p) => (
+            <Button key={p} onClick={() => onAddPopulation(p)}>
+              {p}
+            </Button>
           ))}
         </SettingsProperty>
       </SettingsGrid>

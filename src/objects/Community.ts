@@ -40,6 +40,11 @@ export default class Community extends PIXI.Graphics {
 
     this._population = [];
 
+    this.interactive = true;
+    this.hitArea = new PIXI.Rectangle(0, 0, rect.width, rect.height);
+    console.log(this.getBounds());
+    this.on("mouseover", () => console.log("what"));
+
     app.ticker.add(() => {
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
@@ -74,6 +79,7 @@ export default class Community extends PIXI.Graphics {
     this.clear();
     this.lineStyle(params.borderWidth * 2, 0xffffff);
     this.drawRect(0, 0, this._drawWidth, this._drawHeight);
+    this.draw();
   }
 
   getRandomPoint(): PIXI.Point {

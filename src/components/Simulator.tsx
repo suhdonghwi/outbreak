@@ -57,6 +57,7 @@ export default function Simulator({ app, communities }: SimulatorProps) {
 
     function onResize() {
       app.renderer.resize(window.innerWidth, window.innerHeight);
+      viewport.resize(window.innerWidth, window.innerHeight);
     }
     window.addEventListener("resize", onResize);
 

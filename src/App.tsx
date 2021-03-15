@@ -20,7 +20,6 @@ function App() {
     })
   );
   const app = appRef.current;
-
   const comms = layout(window.innerWidth, 350, 350, 9).map(
     (r) => new Community(app, r)
   );
