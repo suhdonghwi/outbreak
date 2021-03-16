@@ -52,6 +52,7 @@ export default class Community extends PIXI.Container {
 
     this._drawWidth = rect.width;
     this._drawHeight = rect.height;
+
     this.x = rect.x;
     this.y = rect.y;
 
@@ -78,7 +79,7 @@ export default class Community extends PIXI.Container {
     const duration = 0.1;
     this.on("mouseover", () => {
       if (this._status === "configure")
-        gsap.to(this._overlay, { alpha: 0.8, duration });
+        gsap.to(this._overlay, { alpha: 0.5, duration });
     });
 
     this.on("mouseout", () => {
@@ -92,8 +93,6 @@ export default class Community extends PIXI.Container {
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
         if (person.status === "removed") continue;
-        //if (person.migrating) continue;
-        //console.log(i);
 
         if (person.x < this.offset) {
           person.x = this.offset;
@@ -169,5 +168,19 @@ export default class Community extends PIXI.Container {
       },
       duration: 1,
     });
+  }
+
+  get status(): CommunityStatus {
+    return this._status;
+  }
+
+  set status(v: CommunityStatus) {
+    if (v === "selected") {
+      this._overlay.alpha = 0.9;
+    } else {
+      this._overlay.alpha = 0;
+    }
+
+    this._status = v;
   }
 }

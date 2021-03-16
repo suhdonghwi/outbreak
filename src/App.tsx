@@ -50,6 +50,11 @@ function App() {
   }
 
   function onSelectCommunity(c: Community) {
+    for (const comm of comms) {
+      comm.status = "configure";
+    }
+    c.status = "selected";
+
     setSelectedCommunity(c);
   }
 
