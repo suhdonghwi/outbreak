@@ -10,17 +10,14 @@ import Person from "./objects/Person";
 const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
-function App() {
-  const [app] = useState(
-    () =>
-      new PIXI.Application({
-        backgroundColor: 0x212529,
-        width: gameWidth,
-        height: gameHeight,
-        antialias: true,
-      })
-  );
+const app = new PIXI.Application({
+  backgroundColor: 0x212529,
+  width: gameWidth,
+  height: gameHeight,
+  antialias: true,
+});
 
+function App() {
   const [comms] = useState(() =>
     layout(window.innerWidth, 350, 350, 9).map(
       (r, i) => new Community(app, r, i + 1, onSelectCommunity)
