@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import * as PIXI from "pixi.js";
 
 import ConfigModal from "./components/ConfigModal";
@@ -11,23 +11,20 @@ const gameWidth = window.innerWidth;
 const gameHeight = window.innerHeight;
 
 function App() {
-  const app = useMemo(
+  const [app] = useState(
     () =>
       new PIXI.Application({
         backgroundColor: 0x212529,
         width: gameWidth,
         height: gameHeight,
         antialias: true,
-      }),
-    []
+      })
   );
 
-  const comms = useMemo(
-    () =>
-      layout(window.innerWidth, 350, 350, 9).map(
-        (r, i) => new Community(app, r, i + 1, onSelectCommunity)
-      ),
-    [app]
+  const [comms] = useState(() =>
+    layout(window.innerWidth, 350, 350, 9).map(
+      (r, i) => new Community(app, r, i + 1, onSelectCommunity)
+    )
   );
 
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
