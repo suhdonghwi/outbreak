@@ -29,11 +29,12 @@ const ModalContainer = styled.div`
     right: 0;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 90%;
   }
 
   @media screen and (max-width: 420px) {
-    width: 19rem;
-    padding: 1.7rem;
+    width: 95%;
+    padding: 2rem 1.7rem;
   }
 `;
 
