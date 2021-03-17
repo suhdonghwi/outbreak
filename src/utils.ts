@@ -18,8 +18,6 @@ export function layout(
     gap = 60;
 
   const cols = Math.ceil(Math.sqrt(count));
-  // while ((communityWidth + gap) * (cols + 1) - gap < actualWidth) cols++;
-  // if (cols === 0) return [];
 
   const delta = (containerWidth - ((communityWidth + gap) * cols - gap)) / 2,
     result = [];

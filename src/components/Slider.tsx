@@ -4,11 +4,10 @@ import ReactSlider from "react-slider";
 
 const StyledSlider = styled(ReactSlider)`
   width: 100%;
-  height: 7px;
+  height: 25px;
 `;
 
 const StyledThumb = styled.div`
-  bottom: -10px;
   height: 25px;
   line-height: 25px;
   width: 25px;
@@ -27,11 +26,12 @@ const Thumb = (props: any, state: { valueNow: number }) => (
 );
 
 const StyledTrack = styled.div`
-  top: 0;
+  top: 10px;
   bottom: 0;
   background: #495057;
   opacity: 0.7;
   border-radius: 999px;
+  height: 7px;
 `;
 
 const Track = (props: any, state: { index: number }) => (

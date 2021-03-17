@@ -9,18 +9,20 @@ import Community from "../objects/Community";
 const ModalContainer = styled.div`
   position: absolute;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: 2%;
+  transform: translateY(-50%);
 
   background: rgba(52, 58, 64, 0.4);
   backdrop-filter: blur(20px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
 
-  padding: 2rem;
+  padding: 2.5rem;
+  box-sizing: border-box;
   color: white;
 
-  width: 28rem;
+  width: 25rem;
+  height: 90%;
 `;
 
 const Title = styled.h1`
@@ -29,27 +31,27 @@ const Title = styled.h1`
     margin-top: 2rem;
   }
 
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   display: flex;
   align-items: center;
 `;
 
-const SettingsGrid = styled.div`
-  display: grid;
-
-  grid-template-columns: 9rem 1fr;
-  column-gap: 1rem;
-  align-items: center;
+const Settings = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
-const SettingsName = styled.h2`
+const Property = styled.div`
+  margin-bottom: 1.5rem;
+`;
+
+const PropertyName = styled.h2`
   font-weight: normal;
-  font-size: 0.9rem;
-
-  text-align: center;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
 `;
 
-const SettingsProperty = styled.div``;
+const PropertySetting = styled.div``;
 
 const Button = styled.button`
   cursor: pointer;
@@ -106,67 +108,77 @@ export default function ConfigModal({
         <FaGlobeAmericas className={IconCss} />
         Environment settings
       </Title>
-      <SettingsGrid>
-        <SettingsName>Number of communities</SettingsName>
-        <SettingsProperty>
-          <Slider
-            marks
-            min={1}
-            max={25}
-            value={communityCount}
-            onChange={(v) => onChangeCommunityCount(v as number)}
-          />
-        </SettingsProperty>
+      <Settings>
+        <Property>
+          <PropertyName>Number of communities</PropertyName>
+          <PropertySetting>
+            <Slider
+              marks
+              min={1}
+              max={25}
+              value={communityCount}
+              onChange={(v) => onChangeCommunityCount(v as number)}
+            />
+          </PropertySetting>
+        </Property>
 
-        <SettingsName>Add population to all</SettingsName>
-        <SettingsProperty>
-          {populationNumbers.map((p) => (
-            <Button key={p} onClick={() => onAddPopulation(p)}>
-              {p}
-            </Button>
-          ))}
-        </SettingsProperty>
+        <Property>
+          <PropertyName>Add population to all</PropertyName>
+          <PropertySetting>
+            {populationNumbers.map((p) => (
+              <Button key={p} onClick={() => onAddPopulation(p)}>
+                {p}
+              </Button>
+            ))}
+          </PropertySetting>
+        </Property>
 
-        <SettingsName>Remove population of all</SettingsName>
-        <SettingsProperty>
-          {populationNumbers.map((p) => (
-            <Button key={p} onClick={() => onRemovePopulation(p)}>
-              {p}
-            </Button>
-          ))}
-        </SettingsProperty>
-      </SettingsGrid>
+        <Property>
+          <PropertyName>Remove population of all</PropertyName>
+          <PropertySetting>
+            {populationNumbers.map((p) => (
+              <Button key={p} onClick={() => onRemovePopulation(p)}>
+                {p}
+              </Button>
+            ))}
+          </PropertySetting>
+        </Property>
+      </Settings>
 
       <Title>
         <FaUsers className={IconCss} />
         Community {selectedCommunity && selectedCommunity.id} settings
       </Title>
       {selectedCommunity !== null ? (
-        <SettingsGrid>
-          <SettingsName>Add population</SettingsName>
-          <SettingsProperty>
-            {populationNumbers.map((p) => (
-              <Button
-                key={p}
-                onClick={() => onAddPopulation(p, selectedCommunity)}
-              >
-                {p}
-              </Button>
-            ))}
-          </SettingsProperty>
+        <Settings>
+          <Property>
+            <PropertyName>Add population</PropertyName>
+            <PropertySetting>
+              {populationNumbers.map((p) => (
+                <Button
+                  key={p}
+                  onClick={() => onAddPopulation(p, selectedCommunity)}
+                >
+                  {p}
+                </Button>
+              ))}
+            </PropertySetting>
+          </Property>
 
-          <SettingsName>Remove population</SettingsName>
-          <SettingsProperty>
-            {populationNumbers.map((p) => (
-              <Button
-                key={p}
-                onClick={() => onRemovePopulation(p, selectedCommunity)}
-              >
-                {p}
-              </Button>
-            ))}
-          </SettingsProperty>
-        </SettingsGrid>
+          <Property>
+            <PropertyName>Remove population</PropertyName>
+            <PropertySetting>
+              {populationNumbers.map((p) => (
+                <Button
+                  key={p}
+                  onClick={() => onRemovePopulation(p, selectedCommunity)}
+                >
+                  {p}
+                </Button>
+              ))}
+            </PropertySetting>
+          </Property>
+        </Settings>
       ) : (
         <UnselectedBox>Click a community to configure</UnselectedBox>
       )}
