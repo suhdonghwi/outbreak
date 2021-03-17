@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as PIXI from "pixi.js";
+import gsap from "gsap";
 
 import ConfigModal from "./components/ConfigModal";
 import Simulator from "./components/Simulator";
@@ -22,9 +23,21 @@ function App() {
   const [communityCount, setCommunityCount] = useState(4);
 
   useEffect(() => {
-    const newComms = layout(window.innerWidth, 350, 350, communityCount).map(
-      (r, i) => new Community(app, r, i + 1)
-    );
+    if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
+      setSelectedCommunity(null);
+    }
+
+    const newLayout = layout(window.innerWidth, 350, 350, communityCount);
+    const newComms = newLayout.map((l, i) => new Community(app, l, i + 1));
+
+    for (let i = 0; i < Math.min(communityCount, comms.length); i++) {
+      gsap.to(comms[i], {
+        x: newLayout[i].x,
+        y: newLayout[i].y,
+        duration: 0.2,
+      });
+      newComms[i] = comms[i];
+    }
 
     function onSelectCommunity(c: Community) {
       for (const comm of newComms) {
