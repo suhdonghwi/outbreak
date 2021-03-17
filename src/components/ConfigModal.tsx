@@ -21,8 +21,20 @@ const ModalContainer = styled.div`
   box-sizing: border-box;
   color: white;
 
-  width: 25rem;
+  width: 24rem;
   height: 90%;
+  overflow: auto;
+
+  @media screen and (max-width: 534px) {
+    right: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  @media screen and (max-width: 420px) {
+    width: 19rem;
+    padding: 1.7rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -34,6 +46,10 @@ const Title = styled.h1`
   font-size: 1.6rem;
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 420px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const Settings = styled.div`
@@ -77,8 +93,8 @@ const IconCss = css`
 `;
 
 const UnselectedBox = styled.div`
-  color: #e9ecef;
-  border: 1px dashed #e9ecef;
+  color: #ced4da;
+  border: 1px dashed #ced4da;
   border-radius: 5px;
   text-align: center;
   padding: 1.2rem;
