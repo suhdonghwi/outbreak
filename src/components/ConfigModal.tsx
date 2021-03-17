@@ -37,14 +37,14 @@ const Title = styled.h1`
 const SettingsGrid = styled.div`
   display: grid;
 
-  grid-template-columns: 7rem 1fr;
+  grid-template-columns: 9rem 1fr;
   column-gap: 1rem;
   align-items: center;
 `;
 
 const SettingsName = styled.h2`
   font-weight: normal;
-  font-size: 1rem;
+  font-size: 0.9rem;
 
   text-align: center;
 `;
@@ -83,16 +83,17 @@ const UnselectedBox = styled.div`
 `;
 
 interface ConfigModalProps {
-  onAddPopulationToAll: (n: number) => void;
-  onAddPopulation: (n: number, c: Community) => void;
+  onAddPopulation: (n: number, c?: Community) => void;
+  onRemovePopulation: (n: number, c?: Community) => void;
+
   selectedCommunity: Community | null;
   communityCount: number;
   onChangeCommunityCount: (n: number) => void;
 }
 
 export default function ConfigModal({
-  onAddPopulationToAll,
   onAddPopulation,
+  onRemovePopulation,
   selectedCommunity,
   communityCount,
   onChangeCommunityCount,
@@ -120,7 +121,16 @@ export default function ConfigModal({
         <SettingsName>Add population to all</SettingsName>
         <SettingsProperty>
           {populationNumbers.map((p) => (
-            <Button key={p} onClick={() => onAddPopulationToAll(p)}>
+            <Button key={p} onClick={() => onAddPopulation(p)}>
+              {p}
+            </Button>
+          ))}
+        </SettingsProperty>
+
+        <SettingsName>Remove population of all</SettingsName>
+        <SettingsProperty>
+          {populationNumbers.map((p) => (
+            <Button key={p} onClick={() => onRemovePopulation(p)}>
               {p}
             </Button>
           ))}
@@ -139,6 +149,18 @@ export default function ConfigModal({
               <Button
                 key={p}
                 onClick={() => onAddPopulation(p, selectedCommunity)}
+              >
+                {p}
+              </Button>
+            ))}
+          </SettingsProperty>
+
+          <SettingsName>Remove population</SettingsName>
+          <SettingsProperty>
+            {populationNumbers.map((p) => (
+              <Button
+                key={p}
+                onClick={() => onRemovePopulation(p, selectedCommunity)}
               >
                 {p}
               </Button>

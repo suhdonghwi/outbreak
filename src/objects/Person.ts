@@ -3,6 +3,7 @@ import gsap from "gsap";
 
 import InfectCircle from "./InfectCircle";
 import params from "../parameters";
+import app from "../App";
 
 type PersonStatus = "alive" | "removing" | "removed";
 
@@ -24,12 +25,7 @@ export default class Person extends PIXI.Container {
   readonly infectedColor = 0xff6b6b;
   readonly removedColor = 0x495057;
 
-  constructor(
-    app: PIXI.Application,
-    position: PIXI.Point,
-    angle: number,
-    speed: number
-  ) {
+  constructor(position: PIXI.Point, angle: number, speed: number) {
     super();
 
     this.sortableChildren = true;

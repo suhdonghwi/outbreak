@@ -18,6 +18,7 @@ const StyledThumb = styled.div`
   font-size: 0.8rem;
   color: #fff;
   border-radius: 50%;
+  outline: none;
   cursor: grab;
 `;
 

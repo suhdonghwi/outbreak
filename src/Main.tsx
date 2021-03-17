@@ -1,34 +1,28 @@
 import React, { useEffect, useState } from "react";
-import * as PIXI from "pixi.js";
 import gsap from "gsap";
 
 import ConfigModal from "./components/ConfigModal";
 import Simulator from "./components/Simulator";
 import Community from "./objects/Community";
 import { layout } from "./utils";
-import Person from "./objects/Person";
+import app from "./App";
 
-const gameWidth = window.innerWidth;
-const gameHeight = window.innerHeight;
-
-const app = new PIXI.Application({
-  backgroundColor: 0x212529,
-  width: gameWidth,
-  height: gameHeight,
-  antialias: true,
-});
-
-function App() {
+function Main() {
   const [comms, setComms] = useState<Community[]>([]);
   const [communityCount, setCommunityCount] = useState(4);
+  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
+    null
+  );
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
       setSelectedCommunity(null);
     }
+  }, [communityCount, selectedCommunity]);
 
+  useEffect(() => {
     const newLayout = layout(window.innerWidth, 350, 350, communityCount);
-    const newComms = newLayout.map((l, i) => new Community(app, l, i + 1));
+    const newComms = newLayout.map((l, i) => new Community(l, i + 1));
 
     for (let i = 0; i < Math.min(communityCount, comms.length); i++) {
       gsap.to(comms[i], {
@@ -52,25 +46,23 @@ function App() {
     setComms(newComms);
   }, [communityCount]);
 
-  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
-    null
-  );
-
-  function onAddPopulationToAll(n: number) {
-    for (const comm of comms) {
-      for (let i = 0; i < n; i++) {
-        comm.addPopulation(
-          new Person(app, comm.getRandomPoint(), Math.random() * 2 * Math.PI, 0)
-        );
+  function onAddPopulation(n: number, c?: Community) {
+    if (c === undefined) {
+      for (const comm of comms) {
+        comm.addRandomPopulation(n, 0);
       }
+    } else {
+      c.addRandomPopulation(n, 0);
     }
   }
 
-  function onAddPopulation(n: number, c: Community) {
-    for (let i = 0; i < n; i++) {
-      c.addPopulation(
-        new Person(app, c.getRandomPoint(), Math.random() * 2 * Math.PI, 0)
-      );
+  function onRemovePopulation(n: number, c?: Community) {
+    if (c === undefined) {
+      for (const comm of comms) {
+        comm.removePopulation(n);
+      }
+    } else {
+      c.removePopulation(n);
     }
   }
 
@@ -78,14 +70,14 @@ function App() {
     <div className="App">
       <Simulator app={app} communities={comms} />
       <ConfigModal
-        onAddPopulationToAll={onAddPopulationToAll}
-        onAddPopulation={onAddPopulation}
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
         onChangeCommunityCount={(v) => setCommunityCount(v)}
+        onAddPopulation={onAddPopulation}
+        onRemovePopulation={onRemovePopulation}
       />
     </div>
   );
 }
 
-export default App;
+export default Main;

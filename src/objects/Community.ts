@@ -6,6 +6,7 @@ import gsap from "gsap";
 import params from "../parameters";
 import { distance } from "../utils";
 import SettingsOverlay from "./SettingsOverlay";
+import app from "../App";
 
 type CommunityStatus = "configure" | "selected" | "normal";
 export default class Community extends PIXI.Container {
@@ -36,7 +37,7 @@ export default class Community extends PIXI.Container {
     }
   }
 
-  constructor(app: PIXI.Application, rect: PIXI.Rectangle, id: number) {
+  constructor(rect: PIXI.Rectangle, id: number) {
     super();
 
     this._population = [];
@@ -135,9 +136,23 @@ export default class Community extends PIXI.Container {
     return this._population;
   }
 
+  addRandomPopulation(count: number, speed: number) {
+    for (let i = 0; i < count; i++)
+      this.addPopulation(
+        new Person(this.getRandomPoint(), Math.random() * 2 * Math.PI, speed)
+      );
+  }
+
   addPopulation(...population: Person[]): void {
     this.population.push(...population);
     this.addChild(...population);
+  }
+
+  removePopulation(count: number = 1): void {
+    for (let i = 0; i < count && this.population.length > 0; i++) {
+      const toRemove = this.population.pop() as Person;
+      this.removeChild(toRemove);
+    }
   }
 
   countAlive(): number {
