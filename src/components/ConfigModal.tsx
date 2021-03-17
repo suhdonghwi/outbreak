@@ -22,7 +22,14 @@ const Container = styled.div`
 
   box-sizing: border-box;
   pointer-events: none;
+
   transform: translateY(-50%);
+  transition: all 0.5s;
+
+  &.hidden {
+    right: 0;
+    transform: translate(100%, -50%);
+  }
 
   @media screen and (max-width: 534px) {
     right: 0;
@@ -180,6 +187,9 @@ interface ConfigModalProps {
   selectedCommunity: Community | null;
   communityCount: number;
   onChangeCommunityCount: (n: number) => void;
+
+  onFinish: () => void;
+  hidden: boolean;
 }
 
 const populationNumbers = [1, 5, 10, 50, 100];
@@ -271,11 +281,11 @@ function CommunitySettings({
 }
 
 export default function ConfigModal(props: ConfigModalProps) {
-  const { selectedCommunity } = props;
+  const { selectedCommunity, onFinish, hidden } = props;
   const [collapse, setCollapse] = useState(false);
 
   return (
-    <Container>
+    <Container className={hidden ? "hidden" : ""}>
       <ConfigBox className={collapse ? "collapse" : ""}>
         <Header>
           <MenuButton
@@ -285,7 +295,7 @@ export default function ConfigModal(props: ConfigModalProps) {
             <FaCaretDown />
           </MenuButton>
 
-          <MenuButton style={{ fontSize: "1.1rem" }}>
+          <MenuButton style={{ fontSize: "1.1rem" }} onClick={onFinish}>
             Next
             <FaArrowRight style={{ marginLeft: "0.4rem" }} />
           </MenuButton>

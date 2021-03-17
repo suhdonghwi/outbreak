@@ -13,6 +13,7 @@ function Main() {
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
   );
+  const [configHidden, setConfigHidden] = useState(false);
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
@@ -66,6 +67,10 @@ function Main() {
     }
   }
 
+  function onFinish() {
+    setConfigHidden(true);
+  }
+
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
@@ -75,6 +80,8 @@ function Main() {
         onChangeCommunityCount={(v) => setCommunityCount(v)}
         onAddPopulation={onAddPopulation}
         onRemovePopulation={onRemovePopulation}
+        hidden={configHidden}
+        onFinish={onFinish}
       />
     </div>
   );
