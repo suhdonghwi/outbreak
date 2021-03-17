@@ -15,7 +15,18 @@ import Slider from "./Slider";
 import Community from "../objects/Community";
 import React from "react";
 
-const ModalContainer = styled.div`
+const Container = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 2%;
+
+  height: 90%;
+  width: 24rem;
+
+  transform: translateY(-50%);
+`;
+
+const ConfigBox = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -24,13 +35,7 @@ const ModalContainer = styled.div`
   background: rgba(52, 58, 64, 0.4);
   backdrop-filter: blur(20px);
 
-  position: absolute;
-  top: 50%;
-  right: 2%;
-  transform: translateY(-50%);
-
-  width: 24rem;
-  height: 90%;
+  height: 100%;
   overflow: auto;
 
   @media screen and (max-width: 534px) {
@@ -49,7 +54,8 @@ const ModalContainer = styled.div`
 const Header = styled.div`
   display: flex;
   align-items: center;
-  padding: 0.7rem 1.2rem;
+  min-height: 3rem;
+  padding: 0 1.5rem;
 
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 `;
@@ -148,102 +154,123 @@ interface ConfigModalProps {
   onChangeCommunityCount: (n: number) => void;
 }
 
-export default function ConfigModal({
+const populationNumbers = [1, 5, 10, 50, 100];
+
+function EnvSettings({
+  communityCount,
+  onChangeCommunityCount,
+  onAddPopulation,
+  onRemovePopulation,
+}: ConfigModalProps) {
+  return (
+    <Settings>
+      <Property>
+        <PropertyName>Number of communities</PropertyName>
+        <PropertySetting>
+          <Slider
+            marks
+            min={1}
+            max={25}
+            value={communityCount}
+            onChange={(v) => onChangeCommunityCount(v as number)}
+          />
+        </PropertySetting>
+      </Property>
+
+      <Property>
+        <PropertyName>Add population to all</PropertyName>
+        <PropertySetting>
+          {populationNumbers.map((p) => (
+            <Button key={p} onClick={() => onAddPopulation(p)}>
+              {p}
+            </Button>
+          ))}
+        </PropertySetting>
+      </Property>
+
+      <Property>
+        <PropertyName>Remove population of all</PropertyName>
+        <PropertySetting>
+          {populationNumbers.map((p) => (
+            <Button key={p} onClick={() => onRemovePopulation(p)}>
+              {p}
+            </Button>
+          ))}
+        </PropertySetting>
+      </Property>
+    </Settings>
+  );
+}
+
+function CommunitySettings({
   onAddPopulation,
   onRemovePopulation,
   selectedCommunity,
-  communityCount,
-  onChangeCommunityCount,
 }: ConfigModalProps) {
-  const populationNumbers = [1, 5, 10, 50, 100];
+  if (selectedCommunity === null) return null;
 
   return (
-    <ModalContainer>
-      <Header>
-        <ToggleButton>
-          <FaCaretDown />
-        </ToggleButton>
-      </Header>
-      <Body>
-        <Title>
-          <FaGlobeAmericas className={IconCss} />
-          Environment settings
-        </Title>
-        <Settings>
-          <Property>
-            <PropertyName>Number of communities</PropertyName>
-            <PropertySetting>
-              <Slider
-                marks
-                min={1}
-                max={25}
-                value={communityCount}
-                onChange={(v) => onChangeCommunityCount(v as number)}
-              />
-            </PropertySetting>
-          </Property>
+    <Settings>
+      <Property>
+        <PropertyName>Add population</PropertyName>
+        <PropertySetting>
+          {populationNumbers.map((p) => (
+            <Button
+              key={p}
+              onClick={() => onAddPopulation(p, selectedCommunity)}
+            >
+              {p}
+            </Button>
+          ))}
+        </PropertySetting>
+      </Property>
 
-          <Property>
-            <PropertyName>Add population to all</PropertyName>
-            <PropertySetting>
-              {populationNumbers.map((p) => (
-                <Button key={p} onClick={() => onAddPopulation(p)}>
-                  {p}
-                </Button>
-              ))}
-            </PropertySetting>
-          </Property>
+      <Property>
+        <PropertyName>Remove population</PropertyName>
+        <PropertySetting>
+          {populationNumbers.map((p) => (
+            <Button
+              key={p}
+              onClick={() => onRemovePopulation(p, selectedCommunity)}
+            >
+              {p}
+            </Button>
+          ))}
+        </PropertySetting>
+      </Property>
+    </Settings>
+  );
+}
 
-          <Property>
-            <PropertyName>Remove population of all</PropertyName>
-            <PropertySetting>
-              {populationNumbers.map((p) => (
-                <Button key={p} onClick={() => onRemovePopulation(p)}>
-                  {p}
-                </Button>
-              ))}
-            </PropertySetting>
-          </Property>
-        </Settings>
+export default function ConfigModal(props: ConfigModalProps) {
+  const { selectedCommunity } = props;
 
-        <Title>
-          <FaUsers className={IconCss} />
-          Community {selectedCommunity && selectedCommunity.id} settings
-        </Title>
-        {selectedCommunity !== null ? (
-          <Settings>
-            <Property>
-              <PropertyName>Add population</PropertyName>
-              <PropertySetting>
-                {populationNumbers.map((p) => (
-                  <Button
-                    key={p}
-                    onClick={() => onAddPopulation(p, selectedCommunity)}
-                  >
-                    {p}
-                  </Button>
-                ))}
-              </PropertySetting>
-            </Property>
+  return (
+    <Container>
+      <ConfigBox>
+        <Header>
+          <ToggleButton>
+            <FaCaretDown />
+          </ToggleButton>
+        </Header>
+        <Body>
+          <Title>
+            <FaGlobeAmericas className={IconCss} />
+            Environment settings
+          </Title>
+          <EnvSettings {...props} />
 
-            <Property>
-              <PropertyName>Remove population</PropertyName>
-              <PropertySetting>
-                {populationNumbers.map((p) => (
-                  <Button
-                    key={p}
-                    onClick={() => onRemovePopulation(p, selectedCommunity)}
-                  >
-                    {p}
-                  </Button>
-                ))}
-              </PropertySetting>
-            </Property>
-          </Settings>
-        ) : (
-          <UnselectedBox>Click a community to configure</UnselectedBox>
-        )}
-      </Body>
-    </ModalContainer>
+          <Title>
+            <FaUsers className={IconCss} />
+            Community {selectedCommunity && selectedCommunity.id} settings
+          </Title>
+          {selectedCommunity !== null ? (
+            <CommunitySettings {...props} />
+          ) : (
+            <UnselectedBox>Click a community to configure</UnselectedBox>
+          )}
+        </Body>
+      </ConfigBox>
+    </Container>
   );
 }
