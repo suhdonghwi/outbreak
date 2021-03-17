@@ -36,12 +36,7 @@ export default class Community extends PIXI.Container {
     }
   }
 
-  constructor(
-    app: PIXI.Application,
-    rect: PIXI.Rectangle,
-    id: number,
-    onSelect: (c: Community) => void
-  ) {
+  constructor(app: PIXI.Application, rect: PIXI.Rectangle, id: number) {
     super();
 
     this._population = [];
@@ -87,8 +82,6 @@ export default class Community extends PIXI.Container {
         gsap.to(this._overlay, { alpha: 0, duration });
     });
 
-    this.on("click", () => onSelect(this));
-
     app.ticker.add(() => {
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
@@ -121,6 +114,10 @@ export default class Community extends PIXI.Container {
     this._border.clear();
     this._border.lineStyle(params.borderWidth * 2, 0xffffff);
     this._border.drawRect(0, 0, this._drawWidth, this._drawHeight);
+  }
+
+  bindOnSelect(onSelect: (c: Community) => void) {
+    this.on("click", () => onSelect(this));
   }
 
   getRandomPoint(): PIXI.Point {

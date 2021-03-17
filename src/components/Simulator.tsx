@@ -69,7 +69,7 @@ export default function Simulator({ app, communities }: SimulatorProps) {
 
   useEffect(() => {
     viewport.removeChildren();
-    viewport.addChild(...communities);
+    if (communities.length > 0) viewport.addChild(...communities);
   }, [communities, app, viewport]);
 
   return <div ref={ref} />;
