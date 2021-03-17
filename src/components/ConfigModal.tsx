@@ -1,19 +1,11 @@
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/css";
 
-import {
-  FaUsers,
-  FaGlobeAmericas,
-  FaCaretRight,
-  FaGripHorizontal,
-  FaArrowsAlt,
-  FaSkull,
-  FaCaretDown,
-} from "react-icons/fa";
+import { FaUsers, FaGlobeAmericas, FaCaretDown } from "react-icons/fa";
 import Slider from "./Slider";
 
 import Community from "../objects/Community";
-import React from "react";
 
 const Container = styled.div`
   position: absolute;
@@ -23,7 +15,21 @@ const Container = styled.div`
   height: 90%;
   width: 24rem;
 
+  box-sizing: border-box;
+  pointer-events: none;
   transform: translateY(-50%);
+
+  @media screen and (max-width: 534px) {
+    right: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 95%;
+  }
+
+  @media screen and (max-width: 420px) {
+    width: 90%;
+  }
 `;
 
 const ConfigBox = styled.div`
@@ -38,16 +44,11 @@ const ConfigBox = styled.div`
   height: 100%;
   overflow: auto;
 
-  @media screen and (max-width: 534px) {
-    right: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-  }
+  pointer-events: all;
+  transition: height 0.4s;
 
-  @media screen and (max-width: 420px) {
-    width: 95%;
-    padding: 2rem 1.7rem;
+  &.collapse {
+    height: 3rem;
   }
 `;
 
@@ -61,6 +62,8 @@ const Header = styled.div`
 `;
 
 const ToggleButton = styled.button`
+  cursor: pointer;
+
   appearance: none;
   background: none;
   border: none;
@@ -72,6 +75,16 @@ const ToggleButton = styled.button`
 
   color: #868e96;
   font-size: 1.4rem;
+
+  transition: color 0.3s, transform 0.3s;
+
+  &:hover {
+    color: white;
+  }
+
+  &.collapse {
+    transform: rotateZ(-90deg);
+  }
 `;
 
 const Body = styled.div`
@@ -128,8 +141,14 @@ const Button = styled.button`
   border-radius: 3px;
   border: 1px solid #495057;
 
+  transition: background-color 0.2s;
+
   & + & {
     margin-left: 0.5rem;
+  }
+
+  &:hover {
+    background-color: #495057;
   }
 `;
 
@@ -244,12 +263,16 @@ function CommunitySettings({
 
 export default function ConfigModal(props: ConfigModalProps) {
   const { selectedCommunity } = props;
+  const [collapse, setCollapse] = useState(false);
 
   return (
     <Container>
-      <ConfigBox>
+      <ConfigBox className={collapse ? "collapse" : ""}>
         <Header>
-          <ToggleButton>
+          <ToggleButton
+            onClick={() => setCollapse((c) => !c)}
+            className={collapse ? "collapse" : ""}
+          >
             <FaCaretDown />
           </ToggleButton>
         </Header>
