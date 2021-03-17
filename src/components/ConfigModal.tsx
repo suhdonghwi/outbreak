@@ -86,12 +86,16 @@ interface ConfigModalProps {
   onAddPopulationToAll: (n: number) => void;
   onAddPopulation: (n: number, c: Community) => void;
   selectedCommunity: Community | null;
+  communityCount: number;
+  onChangeCommunityCount: (n: number) => void;
 }
 
 export default function ConfigModal({
   onAddPopulationToAll,
   onAddPopulation,
   selectedCommunity,
+  communityCount,
+  onChangeCommunityCount,
 }: ConfigModalProps) {
   const populationNumbers = [1, 5, 10, 50, 100];
 
@@ -104,7 +108,13 @@ export default function ConfigModal({
       <SettingsGrid>
         <SettingsName>Number of communities</SettingsName>
         <SettingsProperty>
-          <Slider marks min={1} max={25} />
+          <Slider
+            marks
+            min={1}
+            max={25}
+            value={communityCount}
+            onChange={(v) => onChangeCommunityCount(v as number)}
+          />
         </SettingsProperty>
 
         <SettingsName>Add population to all</SettingsName>

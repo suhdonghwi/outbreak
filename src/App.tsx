@@ -68,6 +68,8 @@ function App() {
         onAddPopulationToAll={onAddPopulationToAll}
         onAddPopulation={onAddPopulation}
         selectedCommunity={selectedCommunity}
+        communityCount={communityCount}
+        onChangeCommunityCount={(v) => setCommunityCount(v)}
       />
     </div>
   );
