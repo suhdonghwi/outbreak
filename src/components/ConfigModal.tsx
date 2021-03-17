@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/css";
 
-import { FaUsers, FaGlobeAmericas, FaCaretDown } from "react-icons/fa";
+import {
+  FaUsers,
+  FaGlobeAmericas,
+  FaCaretDown,
+  FaArrowRight,
+} from "react-icons/fa";
 import Slider from "./Slider";
 
 import Community from "../objects/Community";
@@ -59,9 +64,13 @@ const Header = styled.div`
   padding: 0 1.5rem;
 
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+
+  *:last-child {
+    margin-left: auto;
+  }
 `;
 
-const ToggleButton = styled.button`
+const MenuButton = styled.button`
   cursor: pointer;
 
   appearance: none;
@@ -127,7 +136,7 @@ const PropertyName = styled.h2`
 
 const PropertySetting = styled.div``;
 
-const Button = styled.button`
+const UIButton = styled.button`
   cursor: pointer;
 
   background-color: #343a40;
@@ -200,9 +209,9 @@ function EnvSettings({
         <PropertyName>Add population to all</PropertyName>
         <PropertySetting>
           {populationNumbers.map((p) => (
-            <Button key={p} onClick={() => onAddPopulation(p)}>
+            <UIButton key={p} onClick={() => onAddPopulation(p)}>
               {p}
-            </Button>
+            </UIButton>
           ))}
         </PropertySetting>
       </Property>
@@ -211,9 +220,9 @@ function EnvSettings({
         <PropertyName>Remove population of all</PropertyName>
         <PropertySetting>
           {populationNumbers.map((p) => (
-            <Button key={p} onClick={() => onRemovePopulation(p)}>
+            <UIButton key={p} onClick={() => onRemovePopulation(p)}>
               {p}
-            </Button>
+            </UIButton>
           ))}
         </PropertySetting>
       </Property>
@@ -234,12 +243,12 @@ function CommunitySettings({
         <PropertyName>Add population</PropertyName>
         <PropertySetting>
           {populationNumbers.map((p) => (
-            <Button
+            <UIButton
               key={p}
               onClick={() => onAddPopulation(p, selectedCommunity)}
             >
               {p}
-            </Button>
+            </UIButton>
           ))}
         </PropertySetting>
       </Property>
@@ -248,12 +257,12 @@ function CommunitySettings({
         <PropertyName>Remove population</PropertyName>
         <PropertySetting>
           {populationNumbers.map((p) => (
-            <Button
+            <UIButton
               key={p}
               onClick={() => onRemovePopulation(p, selectedCommunity)}
             >
               {p}
-            </Button>
+            </UIButton>
           ))}
         </PropertySetting>
       </Property>
@@ -269,12 +278,17 @@ export default function ConfigModal(props: ConfigModalProps) {
     <Container>
       <ConfigBox className={collapse ? "collapse" : ""}>
         <Header>
-          <ToggleButton
+          <MenuButton
             onClick={() => setCollapse((c) => !c)}
             className={collapse ? "collapse" : ""}
           >
             <FaCaretDown />
-          </ToggleButton>
+          </MenuButton>
+
+          <MenuButton style={{ fontSize: "1.1rem" }}>
+            Next
+            <FaArrowRight style={{ marginLeft: "0.4rem" }} />
+          </MenuButton>
         </Header>
         <Body>
           <Title>
