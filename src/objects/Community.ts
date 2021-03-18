@@ -118,7 +118,7 @@ export default class Community extends PIXI.Container {
   }
 
   bindOnSelect(onSelect: (c: Community) => void) {
-    this.on("click", () => onSelect(this));
+    this.on("click", () => this.status === "configure" && onSelect(this));
   }
 
   getRandomPoint(): PIXI.Point {

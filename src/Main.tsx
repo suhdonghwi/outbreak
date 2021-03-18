@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import gsap from "gsap";
 
 import ConfigModal from "./components/ConfigModal";
+import Timeline from "./components/Timeline";
 import Simulator from "./components/Simulator";
 import Community from "./objects/Community";
 import { layout } from "./utils";
@@ -68,6 +69,10 @@ function Main() {
   }
 
   function onFinish() {
+    for (const comm of comms) {
+      comm.status = "normal";
+    }
+
     setConfigHidden(true);
   }
 
@@ -83,6 +88,7 @@ function Main() {
         hidden={configHidden}
         onFinish={onFinish}
       />
+      <Timeline hidden={!configHidden} />
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
 import Slider from "./Slider";
 
 import Community from "../objects/Community";
+import BlurBox from "./BlurBox";
 
 const Container = styled.div`
   position: absolute;
@@ -44,14 +45,9 @@ const Container = styled.div`
   }
 `;
 
-const ConfigBox = styled.div`
+const ConfigBox = styled(BlurBox)`
   display: flex;
   flex-direction: column;
-
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(52, 58, 64, 0.4);
-  backdrop-filter: blur(20px);
 
   height: 100%;
   overflow: auto;
@@ -64,7 +60,7 @@ const ConfigBox = styled.div`
   }
 `;
 
-const Header = styled.div`
+const Header = styled.header`
   display: flex;
   align-items: center;
   min-height: 3rem;
@@ -91,6 +87,7 @@ const MenuButton = styled.button`
 
   color: #868e96;
   font-size: 1.4rem;
+  outline: none;
 
   transition: color 0.3s, transform 0.3s;
 
