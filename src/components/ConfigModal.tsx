@@ -147,7 +147,6 @@ const UIButton = styled.button`
   cursor: pointer;
 
   background-color: #343a40;
-  backdrop-filter: blur(20px);
   appearance: none;
   border: none;
 
