@@ -24,9 +24,11 @@ export default class Timeline extends PIXI.Graphics {
       this.drawCircle(x, 2.5, tickRadius);
     };
 
-    this.beginFill(0xdee2e6);
+    this.beginFill(0xced4da, 0.2);
     this.drawRect(0, 0, this._drawWidth, 5);
+    this.endFill();
 
+    this.beginFill(0x868e96);
     let x = 0;
     const delta = this._drawWidth / this._divider;
     for (let i = 0; i < this._divider - 1; i++) {
@@ -37,6 +39,7 @@ export default class Timeline extends PIXI.Graphics {
 
     drawBigTick(0);
     drawBigTick(this._drawWidth - tickRadius);
+    this.endFill();
   }
 
   show() {
