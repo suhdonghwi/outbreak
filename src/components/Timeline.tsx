@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { useState } from "react";
+import gsap from "gsap";
 
 const Container = styled.div`
   position: relative;
@@ -32,7 +34,6 @@ const Bar = styled.div`
 const Timepoints = styled.ol`
   display: flex;
   align-items: center;
-  overflow: hidden;
 
   padding: 0;
   margin: 0 auto;
@@ -57,10 +58,6 @@ const Timepoint = styled.li`
   &:not(:first-of-type) {
     margin-left: auto;
   }
-
-  &:not(:last-of-type) {
-    margin-right: 10rem;
-  }
 `;
 
 interface TimelineProps {
@@ -68,15 +65,15 @@ interface TimelineProps {
 }
 
 export default function Timeline({ hidden }: TimelineProps) {
-  const l = [];
-  for (let i = 0; i < 10; i++) l.push(i);
+  const [from, setFrom] = useState(0);
+  const showingPoints = 5;
 
   return (
     <Container className={hidden ? "hidden" : ""}>
       <Bar />
       <Timepoints>
-        {l.map((c) => (
-          <Timepoint>{c}</Timepoint>
+        {Array.from({ length: showingPoints }, (_, i) => (
+          <Timepoint>{i}</Timepoint>
         ))}
       </Timepoints>
     </Container>
