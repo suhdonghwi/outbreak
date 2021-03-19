@@ -4,7 +4,6 @@ import { Viewport } from "pixi-viewport";
 import * as PIXI from "pixi.js";
 
 import Community from "../objects/Community";
-import Timeline from "../objects/Timeline";
 
 /*
   setInterval(() => {
@@ -33,14 +32,9 @@ import Timeline from "../objects/Timeline";
 interface SimulatorProps {
   communities: Community[];
   app: PIXI.Application;
-  showTimeline: boolean;
 }
 
-export default function Simulator({
-  app,
-  communities,
-  showTimeline,
-}: SimulatorProps) {
+export default function Simulator({ app, communities }: SimulatorProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const [viewport] = useState(
@@ -52,8 +46,6 @@ export default function Simulator({
       })
   );
 
-  const [timeline] = useState(() => new Timeline(window.innerWidth - 100, 5));
-
   useEffect(() => {
     if (ref.current !== null) {
       ref.current.appendChild(app.view);
@@ -61,7 +53,6 @@ export default function Simulator({
     }
 
     app.stage.addChild(viewport);
-    app.stage.addChild(timeline);
     viewport.drag().pinch().wheel().decelerate();
 
     function onResize() {
@@ -74,18 +65,12 @@ export default function Simulator({
       window.removeEventListener("resize", onResize);
       app.destroy(true, true);
     };
-  }, [app, viewport, timeline]);
+  }, [app, viewport]);
 
   useEffect(() => {
     viewport.removeChildren();
     if (communities.length > 0) viewport.addChild(...communities);
   }, [communities, app, viewport]);
-
-  useEffect(() => {
-    if (showTimeline) {
-      timeline.show();
-    }
-  }, [showTimeline, timeline]);
 
   return <div ref={ref} />;
 }

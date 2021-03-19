@@ -6,6 +6,7 @@ import Simulator from "./components/Simulator";
 import Community from "./objects/Community";
 import { layout } from "./utils";
 import app from "./App";
+import Timeline from "./components/Timeline";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -77,7 +78,7 @@ function Main() {
 
   return (
     <div className="App">
-      <Simulator app={app} communities={comms} showTimeline={configHidden} />
+      <Simulator app={app} communities={comms} />
       <ConfigModal
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
@@ -87,6 +88,7 @@ function Main() {
         hidden={configHidden}
         onFinish={onFinish}
       />
+      <Timeline hidden={!configHidden} />
     </div>
   );
 }
