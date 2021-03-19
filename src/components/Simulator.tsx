@@ -52,9 +52,7 @@ export default function Simulator({
       })
   );
 
-  const [timeline] = useState(
-    () => new Timeline(window.innerWidth - 100, 5, 10)
-  );
+  const [timeline] = useState(() => new Timeline(window.innerWidth - 100, 5));
 
   useEffect(() => {
     if (ref.current !== null) {
@@ -76,7 +74,7 @@ export default function Simulator({
       window.removeEventListener("resize", onResize);
       app.destroy(true, true);
     };
-  }, [app, viewport]);
+  }, [app, viewport, timeline]);
 
   useEffect(() => {
     viewport.removeChildren();
@@ -87,7 +85,7 @@ export default function Simulator({
     if (showTimeline) {
       timeline.show();
     }
-  }, [showTimeline]);
+  }, [showTimeline, timeline]);
 
   return <div ref={ref} />;
 }
