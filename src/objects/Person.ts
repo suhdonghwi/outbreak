@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import gsap from "gsap";
 
 import InfectCircle from "./InfectCircle";
-import params from "../parameters";
+import params, { personRadius } from "../parameters";
 import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
 
@@ -85,7 +85,7 @@ export default class Person extends PIXI.Container {
   draw(): void {
     this._person.clear();
     this._person.beginFill(this.normalColor);
-    this._person.drawCircle(0, 0, params.personRadius);
+    this._person.drawCircle(0, 0, personRadius);
     this._person.endFill();
   }
 

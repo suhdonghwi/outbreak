@@ -3,7 +3,7 @@ import * as PIXI from "pixi.js";
 import Person from "./Person";
 import gsap from "gsap";
 
-import params from "../parameters";
+import params, { borderWidth, personRadius } from "../parameters";
 import { distance } from "../utils";
 import SettingsOverlay from "./SettingsOverlay";
 import app from "../App";
@@ -19,7 +19,7 @@ export default class Community extends PIXI.Container {
   private _drawHeight: number;
   private _overlay: SettingsOverlay;
 
-  readonly offset = params.borderWidth + params.personRadius;
+  readonly offset = borderWidth + personRadius;
 
   private infectOther(person: Person) {
     for (let i = 0; i < this.population.length; i++) {
@@ -29,7 +29,7 @@ export default class Community extends PIXI.Container {
 
       if (
         distance(person.position, other.position) <=
-          params.infectCircleRadius + params.personRadius &&
+          params.infectCircleRadius + personRadius &&
         Math.random() < params.infectProbability
       ) {
         other.infected = true;
@@ -59,10 +59,10 @@ export default class Community extends PIXI.Container {
     this._overlay = new SettingsOverlay(
       app,
       new PIXI.Rectangle(
-        params.borderWidth,
-        params.borderWidth,
-        rect.width - params.borderWidth * 2,
-        rect.height - params.borderWidth * 2
+        borderWidth,
+        borderWidth,
+        rect.width - borderWidth * 2,
+        rect.height - borderWidth * 2
       )
     );
     this._overlay.alpha = 0;
@@ -115,7 +115,7 @@ export default class Community extends PIXI.Container {
 
   draw(): void {
     this._border.clear();
-    this._border.lineStyle(params.borderWidth * 2, 0xffffff);
+    this._border.lineStyle(borderWidth * 2, 0xffffff);
     this._border.drawRect(0, 0, this._drawWidth, this._drawHeight);
   }
 
