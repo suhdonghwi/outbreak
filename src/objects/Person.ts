@@ -7,7 +7,7 @@ import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
 import { getParameterState } from "../stores/ParameterStore";
 
-type PersonStatus = "alive" | "removing" | "removed";
+type PersonStatus = "alive" | "migrating" | "removing" | "removed";
 
 export default class Person extends PIXI.Container {
   private _angle: number;
@@ -122,6 +122,10 @@ export default class Person extends PIXI.Container {
 
   set speedFactor(v: number) {
     this._speedFactor = v;
+  }
+
+  set status(v: PersonStatus) {
+    this._status = v;
   }
 
   get status(): PersonStatus {

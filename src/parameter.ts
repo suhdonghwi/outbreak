@@ -12,7 +12,7 @@ const defaultParameter: Parameter = {
   infectCircleRadius: 30,
   infectProbability: 1,
   killTimer: 3,
-  migrateInterval: 0.1,
+  migrateInterval: 0.3,
 };
 
 export const personRadius = 8;

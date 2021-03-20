@@ -9,6 +9,7 @@ import SettingsOverlay from "./SettingsOverlay";
 import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
 import { getParameterState } from "../stores/ParameterStore";
+import { HighlightSpanKind } from "typescript";
 
 export default class Community extends PIXI.Container {
   private _border: PIXI.Graphics;
@@ -16,6 +17,7 @@ export default class Community extends PIXI.Container {
   private _id: number;
 
   private _population: Person[];
+
   private _drawWidth: number;
   private _drawHeight: number;
   private _overlay: SettingsOverlay;
@@ -91,7 +93,8 @@ export default class Community extends PIXI.Container {
 
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
-        if (person.status === "removed") continue;
+        if (person.status === "removed" || person.status === "migrating")
+          continue;
 
         if (person.x < this.offset) {
           person.x = this.offset;
@@ -162,6 +165,10 @@ export default class Community extends PIXI.Container {
     }
   }
 
+  removeAllPopulation(): void {
+    this.removePopulation(this.population.length);
+  }
+
   countAlive(): number {
     return this.population.filter((p) => p.status === "alive").length;
   }
@@ -173,17 +180,24 @@ export default class Community extends PIXI.Container {
     )
       return;
 
-    const person = this.population.splice(index, 1)[0],
+    const person = this.population[index],
       targetLocalPos = to.getRandomPoint(),
       targetPos = this.toLocal(to.toGlobal(new PIXI.Point(0, 0)));
 
+    person.status = "migrating";
     gsap.to(person.position, {
       x: targetPos.x + targetLocalPos.x,
       y: targetPos.y + targetLocalPos.y,
       ease: "power3.inOut",
       onComplete: () => {
-        person.position.set(targetLocalPos.x, targetLocalPos.y);
-        to.addPopulation(person);
+        const index = this.population.indexOf(person);
+        if (index !== -1) {
+          this.population.splice(index, 1);
+
+          person.position.set(targetLocalPos.x, targetLocalPos.y);
+          person.status = "alive";
+          to.addPopulation(person);
+        }
       },
       duration: 1,
     });

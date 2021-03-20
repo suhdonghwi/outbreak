@@ -5,10 +5,11 @@ import * as PIXI from "pixi.js";
 import ConfigModal from "./components/ConfigModal";
 import Simulator from "./components/Simulator";
 import Community from "./objects/Community";
-import { layout } from "./utils";
+import { layout, randomInteger } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
 import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
+import { getParameterState } from "./stores/ParameterStore";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -87,6 +88,37 @@ function Main() {
     }
 
     setConfigHidden(true);
+
+    let migrateCounter = 0;
+    app.ticker.add((delta) => {
+      if (getSimulatorState().status !== "playing") return;
+
+      setDay((d) => d + (delta / 60) * dayPerSecond);
+
+      const { migrateInterval } = getParameterState();
+      if (migrateCounter > migrateInterval) {
+        const sum = comms.map((c) => c.countAlive()).reduce((a, b) => a + b);
+        if (sum === 0) return;
+
+        let comm1;
+        do {
+          comm1 = randomInteger(0, comms.length - 1);
+        } while (comms[comm1].countAlive() === 0);
+
+        let index;
+        do {
+          index = randomInteger(0, comms[comm1].population.length - 1);
+        } while (comms[comm1].population[index].status !== "alive");
+
+        let comm2;
+        do {
+          comm2 = randomInteger(0, comms.length - 1);
+        } while (comm1 === comm2);
+
+        comms[comm1].migrate(index, comms[comm2]);
+        migrateCounter = 0;
+      } else migrateCounter += delta / 60;
+    });
   }
 
   function onToggle() {
@@ -96,7 +128,7 @@ function Main() {
 
   function onReset() {
     for (const comm of comms) {
-      comm.removePopulation(comm.population.length);
+      comm.removeAllPopulation();
     }
 
     let i = 0;
@@ -111,14 +143,6 @@ function Main() {
     setSimulatorState({ status: "paused" });
     setPlaying(false);
   }
-
-  useEffect(() => {
-    app.ticker.add((delta) => {
-      if (getSimulatorState().status !== "playing") return;
-
-      setDay((d) => d + (delta / 60) * dayPerSecond);
-    });
-  }, []);
 
   return (
     <div className="App">
