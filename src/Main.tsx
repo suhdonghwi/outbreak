@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import gsap from "gsap";
+import * as PIXI from "pixi.js";
 
 import ConfigModal from "./components/ConfigModal";
 import Simulator from "./components/Simulator";
@@ -8,9 +9,11 @@ import { layout } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
 import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
+import { CompressedTextureLoader } from "@pixi/compressed-textures";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
+  const [initialState, setInitialState] = useState<PIXI.Point[][]>([]);
   const [communityCount, setCommunityCount] = useState(4);
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
@@ -73,6 +76,11 @@ function Main() {
   }
 
   function onFinishEnvSetting() {
+    const state = comms.map((comm) =>
+      comm.population.map((p) => p.position.clone())
+    );
+    setInitialState(state);
+
     setSimulatorState({ status: "paused" });
     for (const comm of comms) {
       comm.selected = false;
@@ -84,6 +92,24 @@ function Main() {
   function onToggle() {
     setSimulatorState({ status: playing ? "paused" : "playing" });
     setPlaying((v) => !v);
+  }
+
+  function onReset() {
+    for (const comm of comms) {
+      comm.removePopulation(comm.population.length);
+    }
+
+    let i = 0;
+    for (const points of initialState) {
+      for (const point of points) {
+        comms[i].addRandomPopulation(1, 2, point);
+      }
+      i++;
+    }
+
+    setDay(0);
+    setSimulatorState({ status: "paused" });
+    setPlaying(false);
   }
 
   useEffect(() => {
@@ -111,6 +137,7 @@ function Main() {
         day={day}
         playing={playing}
         onToggle={onToggle}
+        onReset={onReset}
       />
     </div>
   );

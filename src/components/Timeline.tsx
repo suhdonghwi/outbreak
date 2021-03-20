@@ -6,6 +6,7 @@ import {
   FaPause,
   FaPlay,
   FaPlus,
+  FaRedo,
 } from "react-icons/fa";
 import defaultEvent, { Event, EventTimeline } from "../event";
 import Button from "./Button";
@@ -110,6 +111,7 @@ interface TimelineProps {
   day: number;
   playing: boolean;
   onToggle: () => void;
+  onReset: () => void;
 }
 
 export default function Timeline({
@@ -117,6 +119,7 @@ export default function Timeline({
   day,
   playing,
   onToggle,
+  onReset,
 }: TimelineProps) {
   const [from, setFrom] = useState(0);
   const [currentModalDay, setCurrentModalDay] = useState<number | null>(null);
@@ -151,8 +154,11 @@ export default function Timeline({
       />
       <Container className={hidden ? "hidden" : ""}>
         <Buttons>
-          <ControlButton style={{ marginRight: "0.7rem" }} onClick={onToggle}>
+          <ControlButton onClick={onToggle}>
             {playing ? <FaPause /> : <FaPlay />}
+          </ControlButton>
+          <ControlButton style={{ marginRight: "0.7rem" }} onClick={onReset}>
+            <FaRedo />
           </ControlButton>
 
           <ControlButton
