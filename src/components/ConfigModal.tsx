@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/css";
 
 import {
   FaUsers,
@@ -12,7 +11,13 @@ import Slider from "./Slider";
 
 import Community from "../objects/Community";
 import BlurBox from "./BlurBox";
-import { Settings, Property, PropertyName, PropertySetting } from "./Config";
+import {
+  Title,
+  Settings,
+  Property,
+  PropertyName,
+  PropertySetting,
+} from "./Config";
 
 const Container = styled.div`
   position: absolute;
@@ -106,22 +111,6 @@ const Body = styled.div`
 
   padding: 1.7rem 2rem;
   box-sizing: border-box;
-  color: white;
-`;
-
-const Title = styled.h1`
-  margin: 0 0 1.2rem 0;
-  &:not(:first-of-type) {
-    margin-top: 2rem;
-  }
-
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-
-  @media screen and (max-width: 420px) {
-    font-size: 1.4rem;
-  }
 `;
 
 const UIButton = styled.button`
@@ -147,10 +136,6 @@ const UIButton = styled.button`
   &:hover {
     background-color: #495057;
   }
-`;
-
-const IconCss = css`
-  margin-right: 0.8rem;
 `;
 
 const UnselectedBox = styled.div`
@@ -283,13 +268,13 @@ export default function ConfigModal(props: ConfigModalProps) {
         </Header>
         <Body>
           <Title>
-            <FaGlobeAmericas className={IconCss} />
+            <FaGlobeAmericas />
             Environment settings
           </Title>
           <EnvSettings {...props} />
 
           <Title>
-            <FaUsers className={IconCss} />
+            <FaUsers />
             Community {selectedCommunity && selectedCommunity.id} settings
           </Title>
           {selectedCommunity !== null ? (
