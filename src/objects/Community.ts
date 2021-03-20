@@ -9,7 +9,6 @@ import SettingsOverlay from "./SettingsOverlay";
 import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
 import { getParameterState } from "../stores/ParameterStore";
-import { HighlightSpanKind } from "typescript";
 
 export default class Community extends PIXI.Container {
   private _border: PIXI.Graphics;
@@ -121,7 +120,7 @@ export default class Community extends PIXI.Container {
 
   draw(): void {
     this._border.clear();
-    this._border.lineStyle(borderWidth * 2, 0xffffff);
+    this._border.lineStyle(borderWidth * 2, 0xadb5bd);
     this._border.drawRect(0, 0, this._drawWidth, this._drawHeight);
   }
 

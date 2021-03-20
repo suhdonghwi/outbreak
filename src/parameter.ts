@@ -16,6 +16,6 @@ const defaultParameter: Parameter = {
 };
 
 export const personRadius = 8;
-export const borderWidth = 4;
+export const borderWidth = 3;
 
 export default defaultParameter;
