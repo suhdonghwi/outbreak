@@ -76,6 +76,16 @@ function Main() {
     setConfigHidden(true);
   }
 
+  const [day, setDay] = useState(0);
+
+  useEffect(() => {
+    function updateDay() {
+      setDay((d) => d + 0.01);
+    }
+
+    setInterval(updateDay, 1);
+  }, []);
+
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
@@ -88,7 +98,7 @@ function Main() {
         hidden={configHidden}
         onFinish={onFinish}
       />
-      <Timeline hidden={!configHidden} />
+      <Timeline hidden={!configHidden} day={day} />
     </div>
   );
 }
