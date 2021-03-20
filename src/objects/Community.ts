@@ -46,6 +46,7 @@ export default class Community extends PIXI.Container {
 
     this._selected = false;
     this._population = [];
+    this._migrating = [];
     this._id = id;
 
     this.sortableChildren = true;
@@ -163,7 +164,7 @@ export default class Community extends PIXI.Container {
     }
   }
 
-  removeAllPopulation(): void {
+  clearPopulation(): void {
     this.removePopulation(this.population.length);
   }
 
@@ -187,8 +188,8 @@ export default class Community extends PIXI.Container {
       y: targetPos.y + targetLocalPos.y,
       ease: "power3.inOut",
       onComplete: () => {
-        person.position.set(targetLocalPos.x, targetLocalPos.y);
         to.addPopulation(person);
+        person.position.set(targetLocalPos.x, targetLocalPos.y);
       },
       duration: 1,
     });

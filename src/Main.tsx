@@ -22,7 +22,7 @@ function Main() {
   const [configHidden, setConfigHidden] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [day, setDay] = useState(0);
-  const dayPerSecond = 2;
+  const dayPerSecond = 0.5;
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
@@ -63,7 +63,6 @@ function Main() {
       }
     } else {
       c.addRandomPopulation(n);
-      c.population[0].infected = true;
     }
   }
 
@@ -129,7 +128,7 @@ function Main() {
 
   function onReset() {
     for (const comm of comms) {
-      comm.removeAllPopulation();
+      comm.clearPopulation();
     }
 
     let i = 0;
@@ -146,6 +145,8 @@ function Main() {
   }
 
   function onEvent({ randomlyInfect }: Parameter) {
+    console.log(comms);
+
     const wholePopulation = [];
     for (const comm of comms) {
       wholePopulation.push(...comm.population);

@@ -133,10 +133,10 @@ export default function EventModal({
           </PropertyName>
           <PropertySetting>
             <Slider
-              min={0.01}
+              min={0.001}
               max={10}
               value={value.infectProbability}
-              step={0.01}
+              step={0.001}
               onChange={(v) =>
                 onChange({ ...value, infectProbability: v as number })
               }
