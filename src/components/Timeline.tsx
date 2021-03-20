@@ -126,6 +126,7 @@ export default function Timeline({
   const [timeline, setTimeline] = useState<EventTimeline>({ 0: defaultEvent });
 
   const [event, setEvent] = useState(defaultEvent);
+  const [isEdit, setIsEdit] = useState(false);
 
   const showingPoints = 7;
   const percent = Math.max(0, Math.min(1, (day - from) / (showingPoints - 1)));
@@ -142,9 +143,8 @@ export default function Timeline({
       }
     }
 
-    console.log(closest);
-
     setEvent(timeline[closest]);
+    setIsEdit(timeline[day] !== undefined);
     setCurrentModalDay(day);
   }
 
@@ -157,6 +157,12 @@ export default function Timeline({
     setCurrentModalDay(null);
   }
 
+  function onRemoveModal(day: number) {
+    delete timeline[day];
+    setTimeline(timeline);
+    setCurrentModalDay(null);
+  }
+
   return (
     <>
       <EventModal
@@ -165,6 +171,8 @@ export default function Timeline({
         day={currentModalDay}
         onCancel={onCancelModal}
         onAdd={onAddModal}
+        onRemove={onRemoveModal}
+        isEdit={isEdit}
       />
       <Container className={hidden ? "hidden" : ""}>
         <Buttons>

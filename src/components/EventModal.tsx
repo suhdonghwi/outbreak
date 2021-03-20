@@ -24,7 +24,7 @@ const Modal = styled(BlurBox)`
 
   transform: translate(-50%, -50%);
 
-  transition: opacity 0.3s;
+  transition: opacity 0.1s;
 
   &.hidden {
     opacity: 0;
@@ -40,10 +40,6 @@ const Buttons = styled.div`
   display: flex;
   margin-top: 0.8rem;
 
-  *:last-of-type {
-    margin-left: 0.4rem;
-  }
-
   *:first-of-type {
     margin-left: auto;
   }
@@ -52,6 +48,10 @@ const Buttons = styled.div`
 const UIButton = styled(Button)`
   padding: 0.4rem 0.9rem;
   border-radius: 4px;
+
+  & + & {
+    margin-left: 0.4rem;
+  }
 `;
 
 interface EventModalProps {
@@ -60,7 +60,9 @@ interface EventModalProps {
 
   day: number | null;
   onAdd: (day: number, event: Event) => void;
+  onRemove: (day: number) => void;
   onCancel: () => void;
+  isEdit: boolean;
 }
 
 export default function EventModal({
@@ -68,13 +70,15 @@ export default function EventModal({
   onChange,
   day,
   onAdd,
+  onRemove,
   onCancel,
+  isEdit,
 }: EventModalProps) {
   return (
     <Modal className={day === null ? "hidden" : ""}>
       <Title>
         <FaRegClock />
-        Add event for day {day}
+        {isEdit ? "Edit" : "Add"} event for day {day}
       </Title>
       <EventSettings>
         <Property>
@@ -156,7 +160,12 @@ export default function EventModal({
         </Property>
       </EventSettings>
       <Buttons>
-        <UIButton onClick={() => onAdd(day!, value)}>Add</UIButton>
+        <UIButton onClick={() => onAdd(day!, value)}>
+          {isEdit ? "Edit" : "Add"}
+        </UIButton>
+        {isEdit && day !== 0 && (
+          <UIButton onClick={() => onRemove(day!)}>Remove</UIButton>
+        )}
         <UIButton onClick={onCancel}>Cancel</UIButton>
       </Buttons>
     </Modal>
