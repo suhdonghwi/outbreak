@@ -184,6 +184,7 @@ export default function Timeline({
                 onClick={() => onClickTimepoint(from + i)}
               >
                 {from + i}
+                {timeline[from + i] !== undefined && "*"}
               </Timepoint>
             ))}
           </Timepoints>

@@ -19,8 +19,8 @@ const Modal = styled(BlurBox)`
   top: 50%;
   left: 50%;
   padding: 1.7rem 2rem;
-  width: 23rem;
-  height: 18rem;
+  width: 25rem;
+  height: 23rem;
   overflow: auto;
 
   transform: translate(-50%, -50%);
