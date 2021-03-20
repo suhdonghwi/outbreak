@@ -8,8 +8,6 @@ import { layout } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
 import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
-import EventModal from "./components/EventModal";
-import defaultParams from "./parameters";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -108,7 +106,6 @@ function Main() {
         hidden={configHidden}
         onFinish={onFinishEnvSetting}
       />
-      <EventModal value={defaultParams} />
       <Timeline
         hidden={!configHidden}
         day={day}

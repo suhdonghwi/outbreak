@@ -7,7 +7,9 @@ import {
   FaPlay,
   FaPlus,
 } from "react-icons/fa";
+import defaultParams from "../parameters";
 import Button from "./Button";
+import EventModal from "./EventModal";
 
 const Container = styled.div`
   position: relative;
@@ -119,41 +121,44 @@ export default function Timeline({
   }
 
   return (
-    <Container className={hidden ? "hidden" : ""}>
-      <Buttons>
-        <ControlButton style={{ marginRight: "0.7rem" }} onClick={onToggle}>
-          {playing ? <FaPause /> : <FaPlay />}
-        </ControlButton>
+    <>
+      <EventModal value={defaultParams} hidden={true} />
+      <Container className={hidden ? "hidden" : ""}>
+        <Buttons>
+          <ControlButton style={{ marginRight: "0.7rem" }} onClick={onToggle}>
+            {playing ? <FaPause /> : <FaPlay />}
+          </ControlButton>
 
-        <ControlButton
-          onClick={() => setFrom(Math.max(0, from - (showingPoints - 1)))}
-        >
-          <FaArrowLeft />
-        </ControlButton>
+          <ControlButton
+            onClick={() => setFrom(Math.max(0, from - (showingPoints - 1)))}
+          >
+            <FaArrowLeft />
+          </ControlButton>
 
-        <ControlButton onClick={() => setFrom(from + (showingPoints - 1))}>
-          <FaArrowRight />
-        </ControlButton>
+          <ControlButton onClick={() => setFrom(from + (showingPoints - 1))}>
+            <FaArrowRight />
+          </ControlButton>
 
-        <ControlButton>
-          <FaPlus />
-        </ControlButton>
-      </Buttons>
-      <BarContainer>
-        <Bar />
-        <FilledBar
-          style={{
-            width: Math.min(100, percent * 100) + "%",
-          }}
-        />
-        <Timepoints>
-          {Array.from({ length: showingPoints }, (_, i) => (
-            <Timepoint key={i} className={from + i <= day ? "passed" : ""}>
-              {from + i}
-            </Timepoint>
-          ))}
-        </Timepoints>
-      </BarContainer>
-    </Container>
+          <ControlButton>
+            <FaPlus />
+          </ControlButton>
+        </Buttons>
+        <BarContainer>
+          <Bar />
+          <FilledBar
+            style={{
+              width: Math.min(100, percent * 100) + "%",
+            }}
+          />
+          <Timepoints>
+            {Array.from({ length: showingPoints }, (_, i) => (
+              <Timepoint key={i} className={from + i <= day ? "passed" : ""}>
+                {from + i}
+              </Timepoint>
+            ))}
+          </Timepoints>
+        </BarContainer>
+      </Container>
+    </>
   );
 }

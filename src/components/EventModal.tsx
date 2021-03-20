@@ -23,6 +23,12 @@ const Modal = styled(BlurBox)`
   overflow: auto;
 
   transform: translate(-50%, -50%);
+
+  transition: opacity 0.3s;
+
+  &.hidden {
+    opacity: 0;
+  }
 `;
 
 const EventSettings = styled(Settings)`
@@ -54,11 +60,12 @@ const AddButton = styled(Button)`
 
 interface EventModalProps {
   value: Parameters;
+  hidden: boolean;
 }
 
-export default function EventModal({ value }: EventModalProps) {
+export default function EventModal({ value, hidden }: EventModalProps) {
   return (
-    <Modal>
+    <Modal className={hidden ? "hidden" : ""}>
       <Title>
         <FaRegClock />
         Add event
