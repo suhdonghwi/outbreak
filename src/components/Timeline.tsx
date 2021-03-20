@@ -193,6 +193,7 @@ export default function Timeline({
             style={{ marginRight: "0.7rem" }}
             onClick={() => {
               setLastPassed(-1);
+              setFrom(0);
               onReset();
             }}
           >
