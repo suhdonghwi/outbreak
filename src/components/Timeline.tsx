@@ -7,6 +7,7 @@ import {
   FaPlay,
   FaPlus,
 } from "react-icons/fa";
+import Button from "./Button";
 
 const Container = styled.div`
   position: relative;
@@ -30,33 +31,13 @@ const Buttons = styled.ul`
   margin: 0 0 1.3rem 0;
 `;
 
-const ControlButton = styled.button`
-  cursor: pointer;
-  outline: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: none;
-  border: none;
-  appearance: none;
-
-  color: white;
-  background-color: #343a40;
-
+const ControlButton = styled(Button)`
   width: 2rem;
   height: 2rem;
   border-radius: 10px;
 
-  transition: background-color 0.2s;
-
   & + & {
     margin-left: 0.6rem;
-  }
-
-  &:hover {
-    background-color: #495057;
   }
 `;
 

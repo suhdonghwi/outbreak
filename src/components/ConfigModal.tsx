@@ -18,6 +18,7 @@ import {
   PropertyName,
   PropertySetting,
 } from "./Config";
+import Button from "./Button";
 
 const Container = styled.div`
   position: absolute;
@@ -113,28 +114,15 @@ const Body = styled.div`
   box-sizing: border-box;
 `;
 
-const UIButton = styled.button`
-  cursor: pointer;
-
-  background-color: #343a40;
-  appearance: none;
-  border: none;
-  outline: none;
-
+const UIButton = styled(Button)`
   font-size: 1rem;
-  color: white;
   padding: 0.3rem 0.7rem;
   border-radius: 3px;
-  border: 1px solid #495057;
 
-  transition: background-color 0.2s;
+  display: inline-block;
 
   & + & {
     margin-left: 0.5rem;
-  }
-
-  &:hover {
-    background-color: #495057;
   }
 `;
 
