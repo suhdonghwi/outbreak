@@ -9,6 +9,7 @@ import {
   FaRedo,
 } from "react-icons/fa";
 import defaultParameter, { Parameter } from "../parameter";
+import { setParameterState } from "../stores/ParameterStore";
 import Button from "./Button";
 import EventModal from "./EventModal";
 
@@ -168,8 +169,12 @@ export default function Timeline({
 
   useEffect(() => {
     if (day > lastPassed + 1) {
-      console.log(day);
-      setLastPassed(Math.floor(day));
+      const exactDay = Math.floor(day);
+      setLastPassed(exactDay);
+
+      if (timeline[exactDay] !== undefined) {
+        setParameterState(timeline[exactDay]);
+      }
     }
   }, [day, lastPassed]);
 

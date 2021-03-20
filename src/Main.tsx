@@ -61,7 +61,7 @@ function Main() {
       }
     } else {
       c.addRandomPopulation(n, 2);
-      c.population[0].infected = true;
+      //c.population[0].infected = true;
     }
   }
 

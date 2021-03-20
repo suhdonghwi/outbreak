@@ -146,11 +146,7 @@ export default class Community extends PIXI.Container {
   addRandomPopulation(count: number, speed: number, point?: PIXI.Point) {
     for (let i = 0; i < count; i++)
       this.addPopulation(
-        new Person(
-          point || this.getRandomPoint(),
-          Math.random() * 2 * Math.PI,
-          speed
-        )
+        new Person(point || this.getRandomPoint(), Math.random() * 2 * Math.PI)
       );
   }
 

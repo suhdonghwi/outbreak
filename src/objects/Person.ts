@@ -11,7 +11,6 @@ type PersonStatus = "alive" | "removing" | "removed";
 
 export default class Person extends PIXI.Container {
   private _angle: number;
-  private _speed: number;
 
   private _person: PIXI.Graphics;
   private _infectCircle: InfectCircle;
@@ -25,7 +24,7 @@ export default class Person extends PIXI.Container {
   readonly infectedColor = 0xff6b6b;
   readonly removedColor = 0x495057;
 
-  constructor(position: PIXI.Point, angle: number, speed: number) {
+  constructor(position: PIXI.Point, angle: number) {
     super();
 
     this.sortableChildren = true;
@@ -33,7 +32,6 @@ export default class Person extends PIXI.Container {
     this.y = position.y;
 
     this._angle = angle;
-    this._speed = speed;
 
     this._infected = false;
     this._infectTimer = 0;
@@ -52,7 +50,11 @@ export default class Person extends PIXI.Container {
     app.ticker.add((delta) => {
       if (getSimulatorState().status !== "playing") return;
 
-      const { killTimer, infectCircleRadius } = getParameterState();
+      const {
+        killTimer,
+        infectCircleRadius,
+        personSpeed,
+      } = getParameterState();
       if (this._infected) {
         this._infectTimer += (1 / 60) * delta;
 
@@ -77,8 +79,8 @@ export default class Person extends PIXI.Container {
         }
       }
 
-      this.x += Math.cos(this._angle) * this._speed * delta;
-      this.y += Math.sin(this._angle) * this._speed * delta;
+      this.x += Math.cos(this._angle) * personSpeed * delta;
+      this.y += Math.sin(this._angle) * personSpeed * delta;
     });
   }
 
@@ -95,14 +97,6 @@ export default class Person extends PIXI.Container {
 
   set angle(v: number) {
     this._angle = v;
-  }
-
-  get speed(): number {
-    return this._speed;
-  }
-
-  set speed(v: number) {
-    this._speed = v;
   }
 
   get infected(): boolean {
