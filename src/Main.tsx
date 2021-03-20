@@ -21,7 +21,7 @@ function Main() {
   const [configHidden, setConfigHidden] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [day, setDay] = useState(0);
-  const dayPerSecond = 0.25;
+  const dayPerSecond = 2;
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {

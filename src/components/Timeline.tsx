@@ -130,7 +130,7 @@ export default function Timeline({
 
   const showingPoints = 7;
   const percent = Math.max(0, Math.min(1, (day - from) / (showingPoints - 1)));
-  if (percent >= 1) {
+  if (percent >= 1 && playing) {
     setFrom(from + showingPoints - 1);
   }
 
