@@ -4,6 +4,7 @@ import {
   FaArrowLeft,
   FaArrowRight,
   FaCalendar,
+  FaPause,
   FaPlay,
   FaPlus,
   FaRedo,
@@ -121,9 +122,16 @@ const Timepoint = styled.li`
 interface TimelineProps {
   hidden: boolean;
   day: number;
+  playing: boolean;
+  onToggle: () => void;
 }
 
-export default function Timeline({ hidden, day }: TimelineProps) {
+export default function Timeline({
+  hidden,
+  day,
+  playing,
+  onToggle,
+}: TimelineProps) {
   const [from, setFrom] = useState(0);
   const showingPoints = 5;
 
@@ -135,8 +143,8 @@ export default function Timeline({ hidden, day }: TimelineProps) {
   return (
     <Container className={hidden ? "hidden" : ""}>
       <Buttons>
-        <ControlButton style={{ marginRight: "0.7rem" }}>
-          <FaPlay />
+        <ControlButton style={{ marginRight: "0.7rem" }} onClick={onToggle}>
+          {playing ? <FaPause /> : <FaPlay />}
         </ControlButton>
 
         <ControlButton

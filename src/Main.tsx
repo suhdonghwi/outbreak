@@ -16,6 +16,8 @@ function Main() {
     null
   );
   const [configHidden, setConfigHidden] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [day, setDay] = useState(0);
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
@@ -52,10 +54,10 @@ function Main() {
   function onAddPopulation(n: number, c?: Community) {
     if (c === undefined) {
       for (const comm of comms) {
-        comm.addRandomPopulation(n, 0);
+        comm.addRandomPopulation(n, 2);
       }
     } else {
-      c.addRandomPopulation(n, 0);
+      c.addRandomPopulation(n, 2);
     }
   }
 
@@ -78,15 +80,10 @@ function Main() {
     setConfigHidden(true);
   }
 
-  const [day, setDay] = useState(0);
-
-  useEffect(() => {
-    function updateDay() {
-      setDay((d) => d + 0.0025);
-    }
-
-    //setInterval(updateDay, 1);
-  }, []);
+  function onToggle() {
+    setSimulatorState({ status: playing ? "paused" : "playing" });
+    setPlaying((v) => !v);
+  }
 
   return (
     <div className="App">
@@ -100,7 +97,12 @@ function Main() {
         hidden={configHidden}
         onFinish={onFinishEnvSetting}
       />
-      <Timeline hidden={!configHidden} day={day} />
+      <Timeline
+        hidden={!configHidden}
+        day={day}
+        playing={playing}
+        onToggle={onToggle}
+      />
     </div>
   );
 }
