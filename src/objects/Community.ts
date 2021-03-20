@@ -92,6 +92,8 @@ export default class Community extends PIXI.Container {
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
 
+        if (person.migrating) continue;
+
         if (person.x < this.offset) {
           person.x = this.offset;
           person.angle = Math.PI - person.angle;
@@ -161,6 +163,10 @@ export default class Community extends PIXI.Container {
     }
   }
 
+  countNonMigrating(): number {
+    return this.population.filter((p) => !p.migrating).length;
+  }
+
   clearPopulation(): void {
     this.removePopulation(this.population.length);
   }
@@ -168,17 +174,23 @@ export default class Community extends PIXI.Container {
   migrate(index: number, to: Community): void {
     if (index > this.population.length - 1) return;
 
-    const person = this.population.splice(index, 1)[0],
+    const person = this.population[index],
       targetLocalPos = to.getRandomPoint(),
       targetPos = this.toLocal(to.toGlobal(new PIXI.Point(0, 0)));
+    person.migrating = true;
 
     gsap.to(person.position, {
       x: targetPos.x + targetLocalPos.x,
       y: targetPos.y + targetLocalPos.y,
       ease: "power3.inOut",
       onComplete: () => {
-        to.addPopulation(person);
-        person.position.set(targetLocalPos.x, targetLocalPos.y);
+        const index = this.population.indexOf(person);
+        if (index !== -1) {
+          to.addPopulation(person);
+          this.population.splice(index, 1);
+          person.position.set(targetLocalPos.x, targetLocalPos.y);
+          person.migrating = false;
+        }
       },
       duration: 1,
     });

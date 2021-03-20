@@ -109,7 +109,7 @@ const Timepoint = styled.li`
 
 function isPassed(current: number, day: number) {
   if (day === 0) return current > 0.1;
-  else return current > day - 0.1;
+  else return current > day - 0.05;
 }
 
 interface TimelineProps {

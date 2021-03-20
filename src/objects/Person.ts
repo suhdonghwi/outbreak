@@ -18,6 +18,7 @@ export default class Person extends PIXI.Container {
   private _infectTimer: number;
 
   private _status: PersonStatus;
+  private _migrating: boolean;
 
   readonly normalColor = 0xced4da;
   readonly infectedColor = 0xff6b6b;
@@ -34,6 +35,7 @@ export default class Person extends PIXI.Container {
 
     this._infectTimer = 0;
     this._status = "normal";
+    this._migrating = false;
 
     this._person = new PIXI.Graphics();
     this._infectCircle = new InfectCircle(1, 0.25);
@@ -121,5 +123,13 @@ export default class Person extends PIXI.Container {
 
   get status(): PersonStatus {
     return this._status;
+  }
+
+  get migrating(): boolean {
+    return this._migrating;
+  }
+
+  set migrating(v: boolean) {
+    this._migrating = v;
   }
 }

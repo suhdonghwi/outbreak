@@ -104,8 +104,9 @@ export default function EventModal({
           <PropertySetting>
             <Slider
               marks
-              min={1}
+              min={0.1}
               max={10}
+              step={0.1}
               value={value.personSpeed}
               onChange={(v) => onChange({ ...value, personSpeed: v as number })}
             />
