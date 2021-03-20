@@ -57,11 +57,11 @@ function Main() {
   function onAddPopulation(n: number, c?: Community) {
     if (c === undefined) {
       for (const comm of comms) {
-        comm.addRandomPopulation(n, 2);
+        comm.addRandomPopulation(n);
       }
     } else {
-      c.addRandomPopulation(n, 2);
-      //c.population[0].infected = true;
+      c.addRandomPopulation(n);
+      c.population[0].infected = true;
     }
   }
 
@@ -102,7 +102,7 @@ function Main() {
     let i = 0;
     for (const points of initialState) {
       for (const point of points) {
-        comms[i].addRandomPopulation(1, 2, point);
+        comms[i].addRandomPopulation(1, point);
       }
       i++;
     }

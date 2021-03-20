@@ -11,6 +11,7 @@ type PersonStatus = "alive" | "removing" | "removed";
 
 export default class Person extends PIXI.Container {
   private _angle: number;
+  private _speedFactor: number;
 
   private _person: PIXI.Graphics;
   private _infectCircle: InfectCircle;
@@ -32,6 +33,7 @@ export default class Person extends PIXI.Container {
     this.y = position.y;
 
     this._angle = angle;
+    this._speedFactor = 1;
 
     this._infected = false;
     this._infectTimer = 0;
@@ -79,8 +81,8 @@ export default class Person extends PIXI.Container {
         }
       }
 
-      this.x += Math.cos(this._angle) * personSpeed * delta;
-      this.y += Math.sin(this._angle) * personSpeed * delta;
+      this.x += Math.cos(this._angle) * personSpeed * this._speedFactor * delta;
+      this.y += Math.sin(this._angle) * personSpeed * this._speedFactor * delta;
     });
   }
 
@@ -114,6 +116,14 @@ export default class Person extends PIXI.Container {
     this._infected = v;
   }
 
+  get speedFactor(): number {
+    return this._speedFactor;
+  }
+
+  set speedFactor(v: number) {
+    this._speedFactor = v;
+  }
+
   get status(): PersonStatus {
     return this._status;
   }
@@ -127,7 +137,7 @@ export default class Person extends PIXI.Container {
       duration: 1,
     });
     gsap.to(this, {
-      speed: 0,
+      speedFactor: 0,
       duration: 1,
       onComplete: () => (this._status = "removed"),
     });
