@@ -190,7 +190,7 @@ export default function Timeline({
         onEvent(event);
       }
     }
-  }, [day, lastPassed, timeline]);
+  }, [day, lastPassed, timeline, onEvent]);
 
   return (
     <>

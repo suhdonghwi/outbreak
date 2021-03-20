@@ -7,16 +7,14 @@ import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
 import { getParameterState } from "../stores/ParameterStore";
 
-type PersonStatus = "alive" | "removing" | "removed";
+type PersonStatus = "normal" | "infected" | "removed";
 
 export default class Person extends PIXI.Container {
   private _angle: number;
-  private _speedFactor: number;
 
   private _person: PIXI.Graphics;
   private _infectCircle: InfectCircle;
 
-  private _infected: boolean;
   private _infectTimer: number;
 
   private _status: PersonStatus;
@@ -33,12 +31,9 @@ export default class Person extends PIXI.Container {
     this.y = position.y;
 
     this._angle = angle;
-    this._speedFactor = 1;
 
-    this._infected = false;
     this._infectTimer = 0;
-
-    this._status = "alive";
+    this._status = "normal";
 
     this._person = new PIXI.Graphics();
     this._infectCircle = new InfectCircle(1, 0.25);
@@ -57,11 +52,11 @@ export default class Person extends PIXI.Container {
         infectCircleRadius,
         personSpeed,
       } = getParameterState();
-      if (this._infected) {
+      if (this.status === "infected") {
         this._infectTimer += (1 / 60) * delta;
 
         if (this._infectTimer >= killTimer) {
-          this.remove();
+          this.status = "removed";
         }
 
         circleTimer += delta / 60;
@@ -81,8 +76,8 @@ export default class Person extends PIXI.Container {
         }
       }
 
-      this.x += Math.cos(this._angle) * personSpeed * this._speedFactor * delta;
-      this.y += Math.sin(this._angle) * personSpeed * this._speedFactor * delta;
+      this.x += Math.cos(this._angle) * personSpeed * delta;
+      this.y += Math.sin(this._angle) * personSpeed * delta;
     });
   }
 
@@ -101,49 +96,30 @@ export default class Person extends PIXI.Container {
     this._angle = v;
   }
 
-  get infected(): boolean {
-    return this._infected;
-  }
+  set status(v: PersonStatus) {
+    let toColor;
 
-  set infected(v: boolean) {
-    const toColor = v ? this.infectedColor : this.normalColor;
+    switch (v) {
+      case "normal":
+        toColor = this.normalColor;
+        break;
+      case "infected":
+        toColor = this.infectedColor;
+        break;
+      case "removed":
+        toColor = this.removedColor;
+        break;
+    }
 
     gsap.to(this._person, {
       pixi: { fillColor: toColor },
     });
 
-    if (!v) this._infectTimer = 0;
-    this._infected = v;
-  }
-
-  get speedFactor(): number {
-    return this._speedFactor;
-  }
-
-  set speedFactor(v: number) {
-    this._speedFactor = v;
-  }
-
-  set status(v: PersonStatus) {
+    if (this.status !== "infected") this._infectTimer = 0;
     this._status = v;
   }
 
   get status(): PersonStatus {
     return this._status;
-  }
-
-  remove(): void {
-    this._infected = false;
-    this._status = "removing";
-
-    gsap.to(this._person, {
-      pixi: { fillColor: this.removedColor },
-      duration: 1,
-    });
-    gsap.to(this, {
-      speedFactor: 0,
-      duration: 1,
-      onComplete: () => (this._status = "removed"),
-    });
   }
 }

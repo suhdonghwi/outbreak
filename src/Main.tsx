@@ -97,18 +97,17 @@ function Main() {
 
       const { migrateInterval } = getParameterState();
       if (migrateCounter > migrateInterval) {
-        const sum = comms.map((c) => c.countAlive()).reduce((a, b) => a + b);
+        const sum = comms
+          .map((c) => c.population.length)
+          .reduce((a, b) => a + b);
         if (sum === 0) return;
 
         let comm1;
         do {
           comm1 = randomInteger(0, comms.length - 1);
-        } while (comms[comm1].countAlive() === 0);
+        } while (comms[comm1].population.length === 0);
 
-        let index;
-        do {
-          index = randomInteger(0, comms[comm1].population.length - 1);
-        } while (comms[comm1].population[index].status !== "alive");
+        const index = randomInteger(0, comms[comm1].population.length - 1);
 
         let comm2;
         do {
@@ -155,7 +154,7 @@ function Main() {
     for (let i = 0; i < randomlyInfect; i++) {
       const person =
         wholePopulation[randomInteger(0, wholePopulation.length - 1)];
-      person.infected = true;
+      person.status = "infected";
     }
   }
 

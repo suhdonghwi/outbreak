@@ -26,8 +26,7 @@ export default class Community extends PIXI.Container {
   private infectOther(person: Person) {
     for (let i = 0; i < this.population.length; i++) {
       const other = this.population[i];
-      if (other.infected || other.status !== "alive" || person === other)
-        continue;
+      if (other.status !== "normal" || person === other) continue;
 
       const { infectCircleRadius, infectProbability } = getParameterState();
 
@@ -36,7 +35,7 @@ export default class Community extends PIXI.Container {
           infectCircleRadius + personRadius &&
         Math.random() < infectProbability
       ) {
-        other.infected = true;
+        other.status = "infected";
       }
     }
   }
@@ -46,7 +45,6 @@ export default class Community extends PIXI.Container {
 
     this._selected = false;
     this._population = [];
-    this._migrating = [];
     this._id = id;
 
     this.sortableChildren = true;
@@ -93,7 +91,6 @@ export default class Community extends PIXI.Container {
 
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
-        if (person.status === "removed") continue;
 
         if (person.x < this.offset) {
           person.x = this.offset;
@@ -111,7 +108,7 @@ export default class Community extends PIXI.Container {
           person.angle = -person.angle;
         }
 
-        if (person.infected) {
+        if (person.status === "infected") {
           this.infectOther(person);
         }
       }
@@ -168,16 +165,8 @@ export default class Community extends PIXI.Container {
     this.removePopulation(this.population.length);
   }
 
-  countAlive(): number {
-    return this.population.filter((p) => p.status === "alive").length;
-  }
-
   migrate(index: number, to: Community): void {
-    if (
-      index > this.population.length - 1 ||
-      this.population[index].status !== "alive"
-    )
-      return;
+    if (index > this.population.length - 1) return;
 
     const person = this.population.splice(index, 1)[0],
       targetLocalPos = to.getRandomPoint(),
