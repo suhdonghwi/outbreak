@@ -7,7 +7,7 @@ import Community from "./objects/Community";
 import { layout } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
-import { setSimulatorState } from "./stores/SimulatorStore";
+import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -18,6 +18,7 @@ function Main() {
   const [configHidden, setConfigHidden] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [day, setDay] = useState(0);
+  const dayPerSecond = 0.25;
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
@@ -84,6 +85,14 @@ function Main() {
     setSimulatorState({ status: playing ? "paused" : "playing" });
     setPlaying((v) => !v);
   }
+
+  useEffect(() => {
+    app.ticker.add((delta) => {
+      if (getSimulatorState().status !== "playing") return;
+
+      setDay((d) => d + (delta / 60) * dayPerSecond);
+    });
+  }, []);
 
   return (
     <div className="App">

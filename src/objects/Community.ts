@@ -7,8 +7,7 @@ import params from "../parameters";
 import { distance } from "../utils";
 import SettingsOverlay from "./SettingsOverlay";
 import app from "../App";
-import useSimulatorStore, { getSimulatorState } from "../stores/SimulatorStore";
-import simulatorStore from "../stores/SimulatorStore";
+import { getSimulatorState } from "../stores/SimulatorStore";
 
 export default class Community extends PIXI.Container {
   private _border: PIXI.Graphics;

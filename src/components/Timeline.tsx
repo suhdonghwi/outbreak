@@ -3,12 +3,9 @@ import React, { useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
-  FaCalendar,
   FaPause,
   FaPlay,
   FaPlus,
-  FaRedo,
-  FaRegCalendar,
 } from "react-icons/fa";
 
 const Container = styled.div`
@@ -133,7 +130,7 @@ export default function Timeline({
   onToggle,
 }: TimelineProps) {
   const [from, setFrom] = useState(0);
-  const showingPoints = 5;
+  const showingPoints = 7;
 
   const percent = Math.max(0, Math.min(1, (day - from) / (showingPoints - 1)));
   if (percent >= 1) {

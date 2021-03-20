@@ -1,4 +1,3 @@
-import { AssertsIdentifierTypePredicate } from "typescript";
 import create from "zustand/vanilla";
 
 type SimulatorStatus = "configure" | "paused" | "playing";
