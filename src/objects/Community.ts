@@ -3,11 +3,12 @@ import * as PIXI from "pixi.js";
 import Person from "./Person";
 import gsap from "gsap";
 
-import params, { borderWidth, personRadius } from "../parameter";
+import { borderWidth, personRadius } from "../parameter";
 import { distance } from "../utils";
 import SettingsOverlay from "./SettingsOverlay";
 import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
+import { getParameterState } from "../stores/ParameterStore";
 
 export default class Community extends PIXI.Container {
   private _border: PIXI.Graphics;
@@ -27,10 +28,12 @@ export default class Community extends PIXI.Container {
       if (other.infected || other.status !== "alive" || person === other)
         continue;
 
+      const { infectCircleRadius, infectProbability } = getParameterState();
+
       if (
         distance(person.position, other.position) <=
-          params.infectCircleRadius + personRadius &&
-        Math.random() < params.infectProbability
+          infectCircleRadius + personRadius &&
+        Math.random() < infectProbability
       ) {
         other.infected = true;
       }

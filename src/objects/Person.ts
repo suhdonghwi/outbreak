@@ -2,9 +2,10 @@ import * as PIXI from "pixi.js";
 import gsap from "gsap";
 
 import InfectCircle from "./InfectCircle";
-import params, { personRadius } from "../parameter";
+import { personRadius } from "../parameter";
 import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
+import { getParameterState } from "../stores/ParameterStore";
 
 type PersonStatus = "alive" | "removing" | "removed";
 
@@ -19,8 +20,6 @@ export default class Person extends PIXI.Container {
   private _infectTimer: number;
 
   private _status: PersonStatus;
-
-  private _circleAnimation: gsap.core.Tween;
 
   readonly normalColor = 0xced4da;
   readonly infectedColor = 0xff6b6b;
@@ -49,31 +48,32 @@ export default class Person extends PIXI.Container {
 
     this.draw();
 
-    this._circleAnimation = gsap.fromTo(
-      this._infectCircle,
-      { pixi: { scale: 1 }, alpha: 1 },
-      {
-        pixi: {
-          scale: params.infectCircleRadius,
-        },
-        alpha: 0,
-        duration: 1,
-        repeat: -1,
-        paused: true,
-        onRepeat: () => {
-          if (!this._infected) this._circleAnimation.pause(0);
-        },
-      }
-    );
-
+    let circleTimer = 0;
     app.ticker.add((delta) => {
       if (getSimulatorState().status !== "playing") return;
 
+      const { killTimer, infectCircleRadius } = getParameterState();
       if (this._infected) {
         this._infectTimer += (1 / 60) * delta;
 
-        if (this._infectTimer >= params.killTimer) {
+        if (this._infectTimer >= killTimer) {
           this.remove();
+        }
+
+        circleTimer += delta / 60;
+        if (circleTimer >= 1) {
+          gsap.fromTo(
+            this._infectCircle,
+            { pixi: { scale: 1 }, alpha: 1 },
+            {
+              pixi: {
+                scale: infectCircleRadius,
+              },
+              alpha: 0,
+              duration: 1,
+            }
+          );
+          circleTimer = 0;
         }
       }
 
@@ -114,9 +114,6 @@ export default class Person extends PIXI.Container {
 
     gsap.to(this._person, {
       pixi: { fillColor: toColor },
-      onComplete: () => {
-        if (v) this._circleAnimation.resume();
-      },
     });
 
     if (!v) this._infectTimer = 0;
