@@ -54,6 +54,7 @@ function Main() {
 
     newComms.map((c) => c.bindOnSelect(onSelectCommunity));
     setComms(newComms);
+    // eslint-disable-next-line
   }, [communityCount]);
 
   function onAddPopulation(n: number, c?: Community) {
