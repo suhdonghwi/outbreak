@@ -97,7 +97,7 @@ export default function EventModal({
         </Property>
         <Property>
           <PropertyName>
-            Disease can be spread up to {value.infectCircleRadius}m
+            Disease can be spread up to {value.infectCircleRadius}m radius
           </PropertyName>
           <PropertySetting>
             <Slider
@@ -117,10 +117,10 @@ export default function EventModal({
           </PropertyName>
           <PropertySetting>
             <Slider
-              min={1}
-              max={100}
+              min={0.01}
+              max={10}
               value={value.infectProbability}
-              step={0.1}
+              step={0.01}
               onChange={(v) =>
                 onChange({ ...value, infectProbability: v as number })
               }

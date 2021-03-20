@@ -107,6 +107,11 @@ const Timepoint = styled.li`
   }
 `;
 
+function isPassed(current: number, day: number) {
+  if (day === 0) return current > 0.1;
+  else return current > day - 0.1;
+}
+
 interface TimelineProps {
   hidden: boolean;
   day: number;
@@ -176,7 +181,7 @@ export default function Timeline({
         setParameterState(timeline[exactDay]);
       }
     }
-  }, [day, lastPassed]);
+  }, [day, lastPassed, timeline]);
 
   return (
     <>
@@ -230,8 +235,10 @@ export default function Timeline({
             {Array.from({ length: showingPoints }, (_, i) => (
               <Timepoint
                 key={i}
-                className={from + i <= day ? "passed" : ""}
-                onClick={() => from + i > day && onClickTimepoint(from + i)}
+                className={isPassed(day, from + i) ? "passed" : ""}
+                onClick={() =>
+                  !isPassed(day, from + i) && onClickTimepoint(from + i)
+                }
               >
                 {from + i}
                 {timeline[from + i] !== undefined && "*"}
