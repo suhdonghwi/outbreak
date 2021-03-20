@@ -57,9 +57,10 @@ const UIButton = styled(Button)`
 interface EventModalProps {
   value: Event;
   day: number | null;
+  onCancel: () => void;
 }
 
-export default function EventModal({ value, day }: EventModalProps) {
+export default function EventModal({ value, day, onCancel }: EventModalProps) {
   return (
     <Modal className={day === null ? "hidden" : ""}>
       <Title>
@@ -126,7 +127,7 @@ export default function EventModal({ value, day }: EventModalProps) {
       </EventSettings>
       <Buttons>
         <UIButton>Add</UIButton>
-        <UIButton>Cancel</UIButton>
+        <UIButton onClick={onCancel}>Cancel</UIButton>
       </Buttons>
     </Modal>
   );

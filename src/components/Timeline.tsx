@@ -131,9 +131,17 @@ export default function Timeline({
     setCurrentModalDay(day);
   }
 
+  function onCancelModal() {
+    setCurrentModalDay(null);
+  }
+
   return (
     <>
-      <EventModal value={defaultEvent} day={currentModalDay} />
+      <EventModal
+        value={defaultEvent}
+        day={currentModalDay}
+        onCancel={onCancelModal}
+      />
       <Container className={hidden ? "hidden" : ""}>
         <Buttons>
           <ControlButton style={{ marginRight: "0.7rem" }} onClick={onToggle}>
