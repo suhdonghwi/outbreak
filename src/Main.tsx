@@ -76,14 +76,14 @@ function Main() {
     setConfigHidden(true);
   }
 
-  const [day, setDay] = useState(0);
+  const [day, setDay] = useState(2.5);
 
   useEffect(() => {
     function updateDay() {
-      setDay((d) => d + 0.01);
+      setDay((d) => d + 0.0025);
     }
 
-    setInterval(updateDay, 1);
+    //setInterval(updateDay, 1);
   }, []);
 
   return (
