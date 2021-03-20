@@ -7,7 +7,7 @@ import {
   FaPlay,
   FaPlus,
 } from "react-icons/fa";
-import defaultParams from "../parameters";
+import defaultEvent from "../event";
 import Button from "./Button";
 import EventModal from "./EventModal";
 
@@ -75,6 +75,8 @@ const Timepoints = styled.ol`
 `;
 
 const Timepoint = styled.li`
+  cursor: pointer;
+
   color: white;
   background-color: #495057;
 
@@ -92,6 +94,10 @@ const Timepoint = styled.li`
 
   &:not(:first-of-type) {
     margin-left: auto;
+  }
+
+  &:hover {
+    background-color: #868e96;
   }
 
   &.passed {
@@ -113,6 +119,7 @@ export default function Timeline({
   onToggle,
 }: TimelineProps) {
   const [from, setFrom] = useState(0);
+  const [currentModalDay, setCurrentModalDay] = useState<number | null>(null);
   const showingPoints = 7;
 
   const percent = Math.max(0, Math.min(1, (day - from) / (showingPoints - 1)));
@@ -120,9 +127,13 @@ export default function Timeline({
     setFrom(from + showingPoints - 1);
   }
 
+  function onClickTimepoint(day: number) {
+    setCurrentModalDay(day);
+  }
+
   return (
     <>
-      <EventModal value={defaultParams} hidden={true} />
+      <EventModal value={defaultEvent} day={currentModalDay} />
       <Container className={hidden ? "hidden" : ""}>
         <Buttons>
           <ControlButton style={{ marginRight: "0.7rem" }} onClick={onToggle}>
@@ -152,7 +163,11 @@ export default function Timeline({
           />
           <Timepoints>
             {Array.from({ length: showingPoints }, (_, i) => (
-              <Timepoint key={i} className={from + i <= day ? "passed" : ""}>
+              <Timepoint
+                key={i}
+                className={from + i <= day ? "passed" : ""}
+                onClick={() => onClickTimepoint(from + i)}
+              >
                 {from + i}
               </Timepoint>
             ))}

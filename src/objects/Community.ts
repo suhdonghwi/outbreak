@@ -3,7 +3,7 @@ import * as PIXI from "pixi.js";
 import Person from "./Person";
 import gsap from "gsap";
 
-import params, { borderWidth, personRadius } from "../parameters";
+import params, { borderWidth, personRadius } from "../event";
 import { distance } from "../utils";
 import SettingsOverlay from "./SettingsOverlay";
 import app from "../App";

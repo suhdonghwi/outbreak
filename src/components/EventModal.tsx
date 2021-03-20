@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { FaRegClock } from "react-icons/fa";
-import { Parameters } from "../parameters";
+import { Event } from "../event";
 
 import BlurBox from "./BlurBox";
 import Button from "./Button";
@@ -28,6 +28,7 @@ const Modal = styled(BlurBox)`
 
   &.hidden {
     opacity: 0;
+    pointer-events: none;
   }
 `;
 
@@ -48,27 +49,22 @@ const Buttons = styled.div`
   }
 `;
 
-const CancelButton = styled(Button)`
-  padding: 0.5rem 0.7rem;
-  border-radius: 4px;
-`;
-
-const AddButton = styled(Button)`
-  padding: 0.5rem 0.7rem;
+const UIButton = styled(Button)`
+  padding: 0.4rem 0.9rem;
   border-radius: 4px;
 `;
 
 interface EventModalProps {
-  value: Parameters;
-  hidden: boolean;
+  value: Event;
+  day: number | null;
 }
 
-export default function EventModal({ value, hidden }: EventModalProps) {
+export default function EventModal({ value, day }: EventModalProps) {
   return (
-    <Modal className={hidden ? "hidden" : ""}>
+    <Modal className={day === null ? "hidden" : ""}>
       <Title>
         <FaRegClock />
-        Add event
+        Add event for day {day}
       </Title>
       <EventSettings>
         <Property>
@@ -129,8 +125,8 @@ export default function EventModal({ value, hidden }: EventModalProps) {
         </Property>
       </EventSettings>
       <Buttons>
-        <AddButton>Add</AddButton>
-        <CancelButton>Cancel</CancelButton>
+        <UIButton>Add</UIButton>
+        <UIButton>Cancel</UIButton>
       </Buttons>
     </Modal>
   );

@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import gsap from "gsap";
 
 import InfectCircle from "./InfectCircle";
-import params, { personRadius } from "../parameters";
+import params, { personRadius } from "../event";
 import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
 
