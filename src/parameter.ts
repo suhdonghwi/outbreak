@@ -1,4 +1,5 @@
-export interface Event {
+export interface Parameter {
+  [key: string]: any;
   personSpeed: number;
   infectCircleRadius: number;
   infectProbability: number;
@@ -6,7 +7,7 @@ export interface Event {
   migrateInterval: number;
 }
 
-const defaultEvent: Event = {
+const defaultParameter: Parameter = {
   personSpeed: 2,
   infectCircleRadius: 30,
   infectProbability: 1,
@@ -14,9 +15,7 @@ const defaultEvent: Event = {
   migrateInterval: 0.1,
 };
 
-export type EventTimeline = Record<number, Event>;
-
 export const personRadius = 8;
 export const borderWidth = 4;
 
-export default defaultEvent;
+export default defaultParameter;

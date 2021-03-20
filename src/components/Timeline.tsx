@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
@@ -8,7 +8,7 @@ import {
   FaPlus,
   FaRedo,
 } from "react-icons/fa";
-import defaultEvent, { Event, EventTimeline } from "../event";
+import defaultParameter, { Parameter } from "../parameter";
 import Button from "./Button";
 import EventModal from "./EventModal";
 
@@ -123,9 +123,11 @@ export default function Timeline({
 }: TimelineProps) {
   const [from, setFrom] = useState(0);
   const [currentModalDay, setCurrentModalDay] = useState<number | null>(null);
-  const [timeline, setTimeline] = useState<EventTimeline>({ 0: defaultEvent });
+  const [timeline, setTimeline] = useState<Record<number, Parameter>>({
+    0: defaultParameter,
+  });
 
-  const [event, setEvent] = useState(defaultEvent);
+  const [event, setEvent] = useState(defaultParameter);
   const [isEdit, setIsEdit] = useState(false);
 
   const showingPoints = 7;
@@ -152,7 +154,7 @@ export default function Timeline({
     setCurrentModalDay(null);
   }
 
-  function onAddModal(day: number, event: Event) {
+  function onAddModal(day: number, event: Parameter) {
     setTimeline({ ...timeline, [day]: event });
     setCurrentModalDay(null);
   }
@@ -162,6 +164,14 @@ export default function Timeline({
     setTimeline(timeline);
     setCurrentModalDay(null);
   }
+  const [lastPassed, setLastPassed] = useState(-1);
+
+  useEffect(() => {
+    if (day > lastPassed + 1) {
+      console.log(day);
+      setLastPassed(Math.floor(day));
+    }
+  }, [day, lastPassed]);
 
   return (
     <>
@@ -179,7 +189,13 @@ export default function Timeline({
           <ControlButton onClick={onToggle}>
             {playing ? <FaPause /> : <FaPlay />}
           </ControlButton>
-          <ControlButton style={{ marginRight: "0.7rem" }} onClick={onReset}>
+          <ControlButton
+            style={{ marginRight: "0.7rem" }}
+            onClick={() => {
+              setLastPassed(-1);
+              onReset();
+            }}
+          >
             <FaRedo />
           </ControlButton>
 

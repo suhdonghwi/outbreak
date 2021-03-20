@@ -9,7 +9,6 @@ import { layout } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
 import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
-import { CompressedTextureLoader } from "@pixi/compressed-textures";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);

@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { FaRegClock } from "react-icons/fa";
-import { Event } from "../event";
+import { Parameter } from "../parameter";
 
 import BlurBox from "./BlurBox";
 import Button from "./Button";
@@ -55,11 +55,11 @@ const UIButton = styled(Button)`
 `;
 
 interface EventModalProps {
-  value: Event;
-  onChange: (e: Event) => void;
+  value: Parameter;
+  onChange: (e: Parameter) => void;
 
   day: number | null;
-  onAdd: (day: number, event: Event) => void;
+  onAdd: (day: number, event: Parameter) => void;
   onRemove: (day: number) => void;
   onCancel: () => void;
   isEdit: boolean;
