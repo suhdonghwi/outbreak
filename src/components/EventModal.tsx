@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "@emotion/styled";
 import { FaRegClock } from "react-icons/fa";
 import { Event } from "../event";
@@ -56,20 +55,21 @@ const UIButton = styled(Button)`
 `;
 
 interface EventModalProps {
+  value: Event;
+  onChange: (e: Event) => void;
+
   day: number | null;
   onAdd: (day: number, event: Event) => void;
   onCancel: () => void;
-  defaultEvent: Event;
 }
 
 export default function EventModal({
+  value,
+  onChange,
   day,
   onAdd,
   onCancel,
-  defaultEvent,
 }: EventModalProps) {
-  const [event, setEvent] = useState<Event>(defaultEvent);
-
   return (
     <Modal className={day === null ? "hidden" : ""}>
       <Title>
@@ -79,46 +79,46 @@ export default function EventModal({
       <EventSettings>
         <Property>
           <PropertyName>
-            Speed of moving people is {event.personSpeed}m/s
+            Speed of moving people is {value.personSpeed}m/s
           </PropertyName>
           <PropertySetting>
             <Slider
               marks
               min={1}
               max={10}
-              value={event.personSpeed}
-              onChange={(v) => setEvent({ ...event, personSpeed: v as number })}
+              value={value.personSpeed}
+              onChange={(v) => onChange({ ...value, personSpeed: v as number })}
             />
           </PropertySetting>
         </Property>
         <Property>
           <PropertyName>
-            Disease can be spread up to {event.infectCircleRadius}m
+            Disease can be spread up to {value.infectCircleRadius}m
           </PropertyName>
           <PropertySetting>
             <Slider
               min={1}
               max={100}
-              value={event.infectCircleRadius}
+              value={value.infectCircleRadius}
               step={0.1}
               onChange={(v) =>
-                setEvent({ ...event, infectCircleRadius: v as number })
+                onChange({ ...value, infectCircleRadius: v as number })
               }
             />
           </PropertySetting>
         </Property>
         <Property>
           <PropertyName>
-            Infection probability per frame is {event.infectProbability}%
+            Infection probability per frame is {value.infectProbability}%
           </PropertyName>
           <PropertySetting>
             <Slider
               min={1}
               max={100}
-              value={event.infectProbability}
+              value={value.infectProbability}
               step={0.1}
               onChange={(v) =>
-                setEvent({ ...event, infectProbability: v as number })
+                onChange({ ...value, infectProbability: v as number })
               }
             />
           </PropertySetting>
@@ -126,37 +126,37 @@ export default function EventModal({
         <Property>
           <PropertyName>
             Infected people are decided to be removed or recovered after{" "}
-            {event.killTimer}s
+            {value.killTimer}s
           </PropertyName>
           <PropertySetting>
             <Slider
               min={1}
               max={10}
-              value={event.killTimer}
+              value={value.killTimer}
               step={0.1}
-              onChange={(v) => setEvent({ ...event, killTimer: v as number })}
+              onChange={(v) => onChange({ ...value, killTimer: v as number })}
             />
           </PropertySetting>
         </Property>
         <Property>
           <PropertyName>
-            People migrate in every {event.migrateInterval}s
+            People migrate in every {value.migrateInterval}s
           </PropertyName>
           <PropertySetting>
             <Slider
               min={0.1}
               max={10}
-              value={event.migrateInterval}
+              value={value.migrateInterval}
               step={0.1}
               onChange={(v) =>
-                setEvent({ ...event, migrateInterval: v as number })
+                onChange({ ...value, migrateInterval: v as number })
               }
             />
           </PropertySetting>
         </Property>
       </EventSettings>
       <Buttons>
-        <UIButton onClick={() => onAdd(day!, event)}>Add</UIButton>
+        <UIButton onClick={() => onAdd(day!, value)}>Add</UIButton>
         <UIButton onClick={onCancel}>Cancel</UIButton>
       </Buttons>
     </Modal>

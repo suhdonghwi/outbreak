@@ -123,7 +123,9 @@ export default function Timeline({
 }: TimelineProps) {
   const [from, setFrom] = useState(0);
   const [currentModalDay, setCurrentModalDay] = useState<number | null>(null);
-  const [timeline, setTimeline] = useState<EventTimeline>({});
+  const [timeline, setTimeline] = useState<EventTimeline>({ 0: defaultEvent });
+
+  const [event, setEvent] = useState(defaultEvent);
 
   const showingPoints = 7;
   const percent = Math.max(0, Math.min(1, (day - from) / (showingPoints - 1)));
@@ -132,6 +134,17 @@ export default function Timeline({
   }
 
   function onClickTimepoint(day: number) {
+    let closest = 0;
+    for (const k of Object.keys(timeline)) {
+      const key = parseInt(k);
+      if (day - key >= 0 && day - key < day - closest) {
+        closest = key;
+      }
+    }
+
+    console.log(closest);
+
+    setEvent(timeline[closest]);
     setCurrentModalDay(day);
   }
 
@@ -147,7 +160,8 @@ export default function Timeline({
   return (
     <>
       <EventModal
-        defaultEvent={defaultEvent}
+        value={event}
+        onChange={(v) => setEvent(v)}
         day={currentModalDay}
         onCancel={onCancelModal}
         onAdd={onAddModal}
