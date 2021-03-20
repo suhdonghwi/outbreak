@@ -7,7 +7,7 @@ import {
   FaPlay,
   FaPlus,
 } from "react-icons/fa";
-import defaultEvent from "../event";
+import defaultEvent, { Event, EventTimeline } from "../event";
 import Button from "./Button";
 import EventModal from "./EventModal";
 
@@ -120,8 +120,9 @@ export default function Timeline({
 }: TimelineProps) {
   const [from, setFrom] = useState(0);
   const [currentModalDay, setCurrentModalDay] = useState<number | null>(null);
-  const showingPoints = 7;
+  const [timeline, setTimeline] = useState<EventTimeline>({});
 
+  const showingPoints = 7;
   const percent = Math.max(0, Math.min(1, (day - from) / (showingPoints - 1)));
   if (percent >= 1) {
     setFrom(from + showingPoints - 1);
@@ -135,12 +136,18 @@ export default function Timeline({
     setCurrentModalDay(null);
   }
 
+  function onAddModal(day: number, event: Event) {
+    setTimeline({ ...timeline, [day]: event });
+    setCurrentModalDay(null);
+  }
+
   return (
     <>
       <EventModal
-        value={defaultEvent}
+        defaultEvent={defaultEvent}
         day={currentModalDay}
         onCancel={onCancelModal}
+        onAdd={onAddModal}
       />
       <Container className={hidden ? "hidden" : ""}>
         <Buttons>
