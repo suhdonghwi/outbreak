@@ -7,6 +7,7 @@ import Community from "./objects/Community";
 import { layout } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
+import useSimulatorStore, { setSimulatorState } from "./stores/SimulatorStore";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -37,9 +38,9 @@ function Main() {
 
     function onSelectCommunity(c: Community) {
       for (const comm of newComms) {
-        comm.status = "configure";
+        comm.selected = false;
       }
-      c.status = "selected";
+      c.selected = true;
 
       setSelectedCommunity(c);
     }
@@ -70,8 +71,9 @@ function Main() {
   }
 
   function onFinishEnvSetting() {
+    setSimulatorState({ status: "paused" });
     for (const comm of comms) {
-      comm.status = "normal";
+      comm.selected = false;
     }
 
     setConfigHidden(true);

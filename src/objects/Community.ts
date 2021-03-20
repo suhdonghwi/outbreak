@@ -7,11 +7,12 @@ import params from "../parameters";
 import { distance } from "../utils";
 import SettingsOverlay from "./SettingsOverlay";
 import app from "../App";
+import useSimulatorStore, { getSimulatorState } from "../stores/SimulatorStore";
+import simulatorStore from "../stores/SimulatorStore";
 
-type CommunityStatus = "configure" | "selected" | "normal";
 export default class Community extends PIXI.Container {
   private _border: PIXI.Graphics;
-  private _status: CommunityStatus;
+  private _selected: boolean;
   private _id: number;
 
   private _population: Person[];
@@ -40,8 +41,8 @@ export default class Community extends PIXI.Container {
   constructor(rect: PIXI.Rectangle, id: number) {
     super();
 
+    this._selected = false;
     this._population = [];
-    this._status = "configure";
     this._id = id;
 
     this.sortableChildren = true;
@@ -74,12 +75,12 @@ export default class Community extends PIXI.Container {
 
     const duration = 0.1;
     this.on("mouseover", () => {
-      if (this._status === "configure")
+      if (getSimulatorState().status === "configure" && !this._selected)
         gsap.to(this._overlay, { alpha: 0.5, duration });
     });
 
     this.on("mouseout", () => {
-      if (this._status === "configure")
+      if (getSimulatorState().status === "configure" && !this._selected)
         gsap.to(this._overlay, { alpha: 0, duration });
     });
 
@@ -118,7 +119,9 @@ export default class Community extends PIXI.Container {
   }
 
   bindOnSelect(onSelect: (c: Community) => void) {
-    this.on("click", () => this.status === "configure" && onSelect(this));
+    this.on("click", () => {
+      getSimulatorState().status === "configure" && onSelect(this);
+    });
   }
 
   getRandomPoint(): PIXI.Point {
@@ -182,17 +185,13 @@ export default class Community extends PIXI.Container {
     });
   }
 
-  get status(): CommunityStatus {
-    return this._status;
-  }
-
-  set status(v: CommunityStatus) {
-    if (v === "selected") {
+  set selected(v: boolean) {
+    if (v) {
       this._overlay.alpha = 0.9;
     } else {
       this._overlay.alpha = 0;
     }
 
-    this._status = v;
+    this._selected = v;
   }
 }
