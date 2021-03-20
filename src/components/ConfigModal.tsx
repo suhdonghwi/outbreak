@@ -12,6 +12,7 @@ import Slider from "./Slider";
 
 import Community from "../objects/Community";
 import BlurBox from "./BlurBox";
+import { Settings, Property, PropertyName, PropertySetting } from "./Config";
 
 const Container = styled.div`
   position: absolute;
@@ -122,23 +123,6 @@ const Title = styled.h1`
     font-size: 1.4rem;
   }
 `;
-
-const Settings = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Property = styled.div`
-  margin-bottom: 1.5rem;
-`;
-
-const PropertyName = styled.h2`
-  font-weight: normal;
-  font-size: 1rem;
-  margin-bottom: 1.2rem;
-`;
-
-const PropertySetting = styled.div``;
 
 const UIButton = styled.button`
   cursor: pointer;
