@@ -85,6 +85,8 @@ export default class Community extends PIXI.Container {
     });
 
     app.ticker.add(() => {
+      if (getSimulatorState().status !== "playing") return;
+
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
         if (person.status === "removed") continue;

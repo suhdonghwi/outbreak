@@ -4,6 +4,7 @@ import gsap from "gsap";
 import InfectCircle from "./InfectCircle";
 import params from "../parameters";
 import app from "../App";
+import { getSimulatorState } from "../stores/SimulatorStore";
 
 type PersonStatus = "alive" | "removing" | "removed";
 
@@ -66,6 +67,8 @@ export default class Person extends PIXI.Container {
     );
 
     app.ticker.add((delta) => {
+      if (getSimulatorState().status !== "playing") return;
+
       if (this._infected) {
         this._infectTimer += (1 / 60) * delta;
 

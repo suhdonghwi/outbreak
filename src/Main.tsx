@@ -7,7 +7,7 @@ import Community from "./objects/Community";
 import { layout } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
-import useSimulatorStore, { setSimulatorState } from "./stores/SimulatorStore";
+import { setSimulatorState } from "./stores/SimulatorStore";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -56,7 +56,6 @@ function Main() {
       }
     } else {
       c.addRandomPopulation(n, 0);
-      c.population[0].infected = true;
     }
   }
 
