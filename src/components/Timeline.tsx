@@ -209,7 +209,7 @@ export default function Timeline({
               <Timepoint
                 key={i}
                 className={from + i <= day ? "passed" : ""}
-                onClick={() => onClickTimepoint(from + i)}
+                onClick={() => from + i > day && onClickTimepoint(from + i)}
               >
                 {from + i}
                 {timeline[from + i] !== undefined && "*"}
