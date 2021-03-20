@@ -83,7 +83,23 @@ export default function EventModal({
       <EventSettings>
         <Property>
           <PropertyName>
-            Speed of moving people is {value.personSpeed}m/s
+            Randomly infect {value.randomlyInfect}{" "}
+            {value.randomlyInfect <= 1 ? "person" : "people"} of population
+          </PropertyName>
+          <PropertySetting>
+            <Slider
+              min={0}
+              max={100}
+              value={value.randomlyInfect}
+              onChange={(v) =>
+                onChange({ ...value, randomlyInfect: v as number })
+              }
+            />
+          </PropertySetting>
+        </Property>
+        <Property>
+          <PropertyName>
+            People move in speed of {value.personSpeed}m/s
           </PropertyName>
           <PropertySetting>
             <Slider

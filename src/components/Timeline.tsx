@@ -118,6 +118,7 @@ interface TimelineProps {
   playing: boolean;
   onToggle: () => void;
   onReset: () => void;
+  onEvent: (event: Parameter) => void;
 }
 
 export default function Timeline({
@@ -126,6 +127,7 @@ export default function Timeline({
   playing,
   onToggle,
   onReset,
+  onEvent,
 }: TimelineProps) {
   const [from, setFrom] = useState(0);
   const [currentModalDay, setCurrentModalDay] = useState<number | null>(null);
@@ -143,15 +145,20 @@ export default function Timeline({
   }
 
   function onClickTimepoint(day: number) {
-    let closest = 0;
-    for (const k of Object.keys(timeline)) {
-      const key = parseInt(k);
-      if (day - key >= 0 && day - key < day - closest) {
-        closest = key;
+    if (timeline[day] !== undefined) {
+      setEvent(timeline[day]);
+    } else {
+      let closest = 0;
+      for (const k of Object.keys(timeline)) {
+        const key = parseInt(k);
+        if (day - key > 0 && day - key < day - closest) {
+          closest = key;
+        }
       }
+
+      setEvent({ ...timeline[closest], randomlyInfect: 0 });
     }
 
-    setEvent(timeline[closest]);
     setIsEdit(timeline[day] !== undefined);
     setCurrentModalDay(day);
   }
@@ -177,8 +184,10 @@ export default function Timeline({
       const exactDay = Math.floor(day);
       setLastPassed(exactDay);
 
-      if (timeline[exactDay] !== undefined) {
-        setParameterState(timeline[exactDay]);
+      const event = timeline[exactDay];
+      if (event !== undefined) {
+        setParameterState(event);
+        onEvent(event);
       }
     }
   }, [day, lastPassed, timeline]);

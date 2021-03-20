@@ -7,7 +7,7 @@ import app from "../App";
 import { getSimulatorState } from "../stores/SimulatorStore";
 import { getParameterState } from "../stores/ParameterStore";
 
-type PersonStatus = "alive" | "migrating" | "removing" | "removed";
+type PersonStatus = "alive" | "removing" | "removed";
 
 export default class Person extends PIXI.Container {
   private _angle: number;

@@ -92,8 +92,7 @@ export default class Community extends PIXI.Container {
 
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
-        if (person.status === "removed" || person.status === "migrating")
-          continue;
+        if (person.status === "removed") continue;
 
         if (person.x < this.offset) {
           person.x = this.offset;
@@ -179,24 +178,17 @@ export default class Community extends PIXI.Container {
     )
       return;
 
-    const person = this.population[index],
+    const person = this.population.splice(index, 1)[0],
       targetLocalPos = to.getRandomPoint(),
       targetPos = this.toLocal(to.toGlobal(new PIXI.Point(0, 0)));
 
-    person.status = "migrating";
     gsap.to(person.position, {
       x: targetPos.x + targetLocalPos.x,
       y: targetPos.y + targetLocalPos.y,
       ease: "power3.inOut",
       onComplete: () => {
-        const index = this.population.indexOf(person);
-        if (index !== -1) {
-          this.population.splice(index, 1);
-
-          person.position.set(targetLocalPos.x, targetLocalPos.y);
-          person.status = "alive";
-          to.addPopulation(person);
-        }
+        person.position.set(targetLocalPos.x, targetLocalPos.y);
+        to.addPopulation(person);
       },
       duration: 1,
     });

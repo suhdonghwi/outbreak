@@ -5,6 +5,8 @@ export interface Parameter {
   infectProbability: number;
   killTimer: number;
   migrateInterval: number;
+
+  randomlyInfect: number;
 }
 
 const defaultParameter: Parameter = {
@@ -13,6 +15,8 @@ const defaultParameter: Parameter = {
   infectProbability: 1,
   killTimer: 3,
   migrateInterval: 0.3,
+
+  randomlyInfect: 2,
 };
 
 export const personRadius = 8;

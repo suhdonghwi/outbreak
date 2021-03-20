@@ -10,6 +10,7 @@ import app from "./App";
 import Timeline from "./components/Timeline";
 import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
 import { getParameterState } from "./stores/ParameterStore";
+import { Parameter } from "./parameter";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -144,6 +145,19 @@ function Main() {
     setPlaying(false);
   }
 
+  function onEvent({ randomlyInfect }: Parameter) {
+    const wholePopulation = [];
+    for (const comm of comms) {
+      wholePopulation.push(...comm.population);
+    }
+
+    for (let i = 0; i < randomlyInfect; i++) {
+      const person =
+        wholePopulation[randomInteger(0, wholePopulation.length - 1)];
+      person.infected = true;
+    }
+  }
+
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
@@ -162,6 +176,7 @@ function Main() {
         playing={playing}
         onToggle={onToggle}
         onReset={onReset}
+        onEvent={onEvent}
       />
     </div>
   );
