@@ -145,8 +145,7 @@ export default function EventModal({
         </Property>
         <Property>
           <PropertyName>
-            Infected people are decided to be removed or recovered after{" "}
-            {value.killTimer}s
+            Infected people are removed after {value.killTimer}s
           </PropertyName>
           <PropertySetting>
             <Slider
@@ -160,7 +159,7 @@ export default function EventModal({
         </Property>
         <Property>
           <PropertyName>
-            People migrate in every {value.migrateInterval}s
+            Migrate one person randomly every {value.migrateInterval}s
           </PropertyName>
           <PropertySetting>
             <Slider
