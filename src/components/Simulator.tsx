@@ -49,7 +49,6 @@ export default function Simulator({ app, communities }: SimulatorProps) {
   useEffect(() => {
     if (ref.current !== null) {
       ref.current.appendChild(app.view);
-      app.start();
     }
 
     app.stage.addChild(viewport);

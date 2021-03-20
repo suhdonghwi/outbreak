@@ -74,7 +74,7 @@ const Bar = styled.div`
   transform: translateY(-50%);
 
   width: 100%;
-  height: 7px;
+  height: 9px;
 
   background-color: rgba(222, 226, 230, 0.3);
   border-radius: 3px;
@@ -97,8 +97,8 @@ const Timepoint = styled.li`
   color: white;
   background-color: #495057;
 
-  min-width: 1.6rem;
-  min-height: 1.6rem;
+  min-width: 1.8rem;
+  min-height: 1.8rem;
 
   border-radius: 100%;
 

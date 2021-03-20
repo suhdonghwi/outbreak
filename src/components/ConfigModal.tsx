@@ -146,6 +146,7 @@ const UIButton = styled.button`
   background-color: #343a40;
   appearance: none;
   border: none;
+  outline: none;
 
   font-size: 1rem;
   color: white;

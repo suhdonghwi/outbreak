@@ -55,6 +55,7 @@ function Main() {
       }
     } else {
       c.addRandomPopulation(n, 0);
+      c.population[0].infected = true;
     }
   }
 
@@ -68,7 +69,7 @@ function Main() {
     }
   }
 
-  function onFinish() {
+  function onFinishEnvSetting() {
     for (const comm of comms) {
       comm.status = "normal";
     }
@@ -76,7 +77,7 @@ function Main() {
     setConfigHidden(true);
   }
 
-  const [day, setDay] = useState(2.5);
+  const [day, setDay] = useState(0);
 
   useEffect(() => {
     function updateDay() {
@@ -96,7 +97,7 @@ function Main() {
         onAddPopulation={onAddPopulation}
         onRemovePopulation={onRemovePopulation}
         hidden={configHidden}
-        onFinish={onFinish}
+        onFinish={onFinishEnvSetting}
       />
       <Timeline hidden={!configHidden} day={day} />
     </div>
