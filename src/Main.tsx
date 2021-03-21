@@ -143,7 +143,8 @@ function Main() {
     }
 
     setDay(0);
-    setSimulatorState({ status: "paused" });
+    setSimulatorState({ status: "configure" });
+    setConfigHidden(false);
     setPlaying(false);
   }
 
