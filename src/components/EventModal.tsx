@@ -21,14 +21,22 @@ const Modal = styled(BlurBox)`
   width: 25rem;
   height: 23rem;
   overflow: auto;
+  box-sizing: border-box;
 
   transform: translate(-50%, -50%);
-
   transition: opacity 0.1s;
 
   &.hidden {
     opacity: 0;
     pointer-events: none;
+  }
+
+  @media screen and (max-width: 540px) {
+    width: 95%;
+  }
+
+  @media screen and (max-height: 680px) {
+    height: 20rem;
   }
 `;
 

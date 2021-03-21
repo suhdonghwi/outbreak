@@ -8,6 +8,7 @@ const app = new PIXI.Application({
   width: gameWidth,
   height: gameHeight,
   antialias: true,
+  resizeTo: window,
 });
 
 export default app;

@@ -4,6 +4,7 @@ html,
 body,
 .App {
   overflow: hidden;
+  position: fixed;
   margin: 0;
 
   width: 100%;
