@@ -22,7 +22,7 @@ function Main() {
   const [configHidden, setConfigHidden] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [day, setDay] = useState(0);
-  const dayPerSecond = 0.5;
+  const dayPerSecond = 0.25;
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
@@ -96,31 +96,33 @@ function Main() {
 
       setDay((d) => d + (delta / 60) * dayPerSecond);
 
-      const { migrateInterval } = getParameterState();
-      if (migrateCounter > migrateInterval) {
-        const sum = comms
-          .map((c) => c.countNonMigrating())
-          .reduce((a, b) => a + b);
-        if (sum === 0) return;
+      if (comms.length > 1) {
+        const { migrateInterval } = getParameterState();
+        if (migrateCounter > migrateInterval) {
+          const sum = comms
+            .map((c) => c.countNonMigrating())
+            .reduce((a, b) => a + b);
+          if (sum === 0) return;
 
-        let comm1;
-        do {
-          comm1 = randomInteger(0, comms.length - 1);
-        } while (comms[comm1].countNonMigrating() === 0);
+          let comm1;
+          do {
+            comm1 = randomInteger(0, comms.length - 1);
+          } while (comms[comm1].countNonMigrating() === 0);
 
-        let index;
-        do {
-          index = randomInteger(0, comms[comm1].population.length - 1);
-        } while (comms[comm1].population[index].migrating);
+          let index;
+          do {
+            index = randomInteger(0, comms[comm1].population.length - 1);
+          } while (comms[comm1].population[index].migrating);
 
-        let comm2;
-        do {
-          comm2 = randomInteger(0, comms.length - 1);
-        } while (comm1 === comm2);
+          let comm2;
+          do {
+            comm2 = randomInteger(0, comms.length - 1);
+          } while (comm1 === comm2);
 
-        comms[comm1].migrate(index, comms[comm2]);
-        migrateCounter = 0;
-      } else migrateCounter += delta / 60;
+          comms[comm1].migrate(index, comms[comm2]);
+          migrateCounter = 0;
+        } else migrateCounter += delta / 60;
+      }
     });
   }
 

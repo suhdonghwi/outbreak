@@ -12,9 +12,9 @@ export interface Parameter {
 const defaultParameter: Parameter = {
   personSpeed: 2,
   infectCircleRadius: 30,
-  infectProbability: 0.01,
+  infectProbability: 5,
   killTimer: 8,
-  migrateInterval: 0.3,
+  migrateInterval: 0.7,
 
   randomlyInfect: 2,
 };
