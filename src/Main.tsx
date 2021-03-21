@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import * as PIXI from "pixi.js";
 
@@ -23,6 +23,49 @@ function Main() {
   const [playing, setPlaying] = useState(false);
   const [day, setDay] = useState(0);
   const dayPerSecond = 0.25;
+
+  const commsRef = useRef<Community[]>();
+  commsRef.current = comms;
+
+  useEffect(() => {
+    let migrateCounter = 0;
+    app.ticker.add((delta) => {
+      const comms = commsRef.current;
+
+      if (getSimulatorState().status !== "playing" || comms === undefined)
+        return;
+
+      setDay((d) => d + (delta / 60) * dayPerSecond);
+
+      if (comms.length > 1) {
+        const { migrateInterval } = getParameterState();
+        if (migrateCounter > migrateInterval) {
+          const sum = comms
+            .map((c) => c.countNonMigrating())
+            .reduce((a, b) => a + b);
+          if (sum === 0) return;
+
+          let comm1;
+          do {
+            comm1 = randomInteger(0, comms.length - 1);
+          } while (comms[comm1].countNonMigrating() === 0);
+
+          let index;
+          do {
+            index = randomInteger(0, comms[comm1].population.length - 1);
+          } while (comms[comm1].population[index].migrating);
+
+          let comm2;
+          do {
+            comm2 = randomInteger(0, comms.length - 1);
+          } while (comm1 === comm2);
+
+          comms[comm1].migrate(index, comms[comm2]);
+          migrateCounter = 0;
+        } else migrateCounter += delta / 60;
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (selectedCommunity !== null && selectedCommunity.id > communityCount) {
@@ -89,41 +132,6 @@ function Main() {
     }
 
     setConfigHidden(true);
-
-    let migrateCounter = 0;
-    app.ticker.add((delta) => {
-      if (getSimulatorState().status !== "playing") return;
-
-      setDay((d) => d + (delta / 60) * dayPerSecond);
-
-      if (comms.length > 1) {
-        const { migrateInterval } = getParameterState();
-        if (migrateCounter > migrateInterval) {
-          const sum = comms
-            .map((c) => c.countNonMigrating())
-            .reduce((a, b) => a + b);
-          if (sum === 0) return;
-
-          let comm1;
-          do {
-            comm1 = randomInteger(0, comms.length - 1);
-          } while (comms[comm1].countNonMigrating() === 0);
-
-          let index;
-          do {
-            index = randomInteger(0, comms[comm1].population.length - 1);
-          } while (comms[comm1].population[index].migrating);
-
-          let comm2;
-          do {
-            comm2 = randomInteger(0, comms.length - 1);
-          } while (comm1 === comm2);
-
-          comms[comm1].migrate(index, comms[comm2]);
-          migrateCounter = 0;
-        } else migrateCounter += delta / 60;
-      }
-    });
   }
 
   function onToggle() {
