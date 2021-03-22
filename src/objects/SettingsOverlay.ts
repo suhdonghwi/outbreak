@@ -1,25 +1,36 @@
 import * as PIXI from "pixi.js";
 
 export default class SettingsOverlay extends PIXI.Graphics {
-  constructor(app: PIXI.Application, rect: PIXI.Rectangle) {
+  private _rect: PIXI.Rectangle;
+  private _text: PIXI.Text;
+
+  constructor(rect: PIXI.Rectangle) {
     super();
 
     this.x = rect.x;
     this.y = rect.y;
-
-    this.beginFill(0x343a40);
-    this.drawRect(0, 0, rect.width, rect.height);
-    this.endFill();
+    this._rect = rect;
 
     const textStyle = new PIXI.TextStyle({
       fill: "white",
       fontSize: 70,
     });
     const text = new PIXI.Text("🛠️", textStyle);
-    text.x = rect.width / 2 - text.width / 2;
-    text.y = rect.height / 2 - text.height / 2;
     text.resolution = 1.5;
 
-    this.addChild(text);
+    this._text = text;
+    this.addChild(this._text);
+
+    this.draw();
+  }
+
+  draw() {
+    this.clear();
+    this.beginFill(0x343a40);
+    this.drawRect(0, 0, this._rect.width, this._rect.height);
+    this.endFill();
+
+    this._text.x = this._rect.width / 2 - this._text.width / 2;
+    this._text.y = this._rect.height / 2 - this._text.height / 2;
   }
 }

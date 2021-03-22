@@ -37,6 +37,8 @@ const Container = styled.div`
   &.hidden {
     right: 0;
     transform: translate(100%, -50%);
+
+    pointer-events: none;
   }
 
   @media screen and (max-width: 534px) {
@@ -142,6 +144,9 @@ interface ConfigModalProps {
   communityCount: number;
   onChangeCommunityCount: (n: number) => void;
 
+  communitySize: number;
+  onChangeCommunitySize: (n: number) => void;
+
   onFinish: () => void;
   hidden: boolean;
 }
@@ -151,6 +156,8 @@ const populationNumbers = [1, 5, 10, 50, 100];
 function EnvSettings({
   communityCount,
   onChangeCommunityCount,
+  communitySize,
+  onChangeCommunitySize,
   onAddPopulation,
   onRemovePopulation,
 }: ConfigModalProps) {
@@ -160,11 +167,22 @@ function EnvSettings({
         <PropertyName>Number of communities</PropertyName>
         <PropertySetting>
           <Slider
-            marks
             min={1}
             max={25}
             value={communityCount}
             onChange={(v) => onChangeCommunityCount(v as number)}
+          />
+        </PropertySetting>
+      </Property>
+
+      <Property>
+        <PropertyName>Default size of communities</PropertyName>
+        <PropertySetting>
+          <Slider
+            min={150}
+            max={1500}
+            value={communitySize}
+            onChange={(v) => onChangeCommunitySize(v as number)}
           />
         </PropertySetting>
       </Property>

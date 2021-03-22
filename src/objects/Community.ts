@@ -17,8 +17,7 @@ export default class Community extends PIXI.Container {
 
   private _population: Person[];
 
-  private _drawWidth: number;
-  private _drawHeight: number;
+  private _sizeRect: PIXI.Rectangle;
   private _overlay: SettingsOverlay;
 
   readonly offset = borderWidth + personRadius;
@@ -49,31 +48,21 @@ export default class Community extends PIXI.Container {
 
     this.sortableChildren = true;
 
-    this._drawWidth = rect.width;
-    this._drawHeight = rect.height;
-
     this.x = rect.x;
     this.y = rect.y;
+    this._sizeRect = new PIXI.Rectangle(0, 0, rect.width, rect.height);
 
     this._border = new PIXI.Graphics();
     this.draw();
     this.addChild(this._border);
 
-    this._overlay = new SettingsOverlay(
-      app,
-      new PIXI.Rectangle(
-        borderWidth,
-        borderWidth,
-        rect.width - borderWidth * 2,
-        rect.height - borderWidth * 2
-      )
-    );
+    this._overlay = new SettingsOverlay(this._sizeRect);
     this._overlay.alpha = 0;
-    this._overlay.zIndex = 1;
+    this._overlay.zIndex = -1;
     this.addChild(this._overlay);
 
     this.interactive = true;
-    this.hitArea = new PIXI.Rectangle(0, 0, rect.width, rect.height);
+    this.hitArea = this._sizeRect;
 
     const duration = 0.1;
     this.on("mouseover", () => {
@@ -97,16 +86,16 @@ export default class Community extends PIXI.Container {
         if (person.x < this.offset) {
           person.x = this.offset;
           person.angle = Math.PI - person.angle;
-        } else if (person.x > this._drawWidth - this.offset) {
-          person.x = this._drawWidth - this.offset;
+        } else if (person.x > this._sizeRect.width - this.offset) {
+          person.x = this._sizeRect.width - this.offset;
           person.angle = Math.PI - person.angle;
         }
 
         if (person.y < this.offset) {
           person.y = this.offset;
           person.angle = -person.angle;
-        } else if (person.y > this._drawHeight - this.offset) {
-          person.y = this._drawHeight - this.offset;
+        } else if (person.y > this._sizeRect.height - this.offset) {
+          person.y = this._sizeRect.height - this.offset;
           person.angle = -person.angle;
         }
 
@@ -120,7 +109,15 @@ export default class Community extends PIXI.Container {
   draw(): void {
     this._border.clear();
     this._border.lineStyle(borderWidth * 2, 0xadb5bd);
-    this._border.drawRect(0, 0, this._drawWidth, this._drawHeight);
+    this._border.drawRect(0, 0, this._sizeRect.width, this._sizeRect.height);
+  }
+
+  set rect(rect: PIXI.Rectangle) {
+    this._sizeRect.width = rect.width;
+    this._sizeRect.height = rect.height;
+
+    this.draw();
+    this._overlay.draw();
   }
 
   bindOnSelect(onSelect: (c: Community) => void) {
@@ -131,8 +128,8 @@ export default class Community extends PIXI.Container {
 
   getRandomPoint(): PIXI.Point {
     return new PIXI.Point(
-      this.offset + Math.random() * (this._drawWidth - this.offset * 2),
-      this.offset + Math.random() * (this._drawHeight - this.offset * 2)
+      this.offset + Math.random() * (this._sizeRect.width - this.offset * 2),
+      this.offset + Math.random() * (this._sizeRect.height - this.offset * 2)
     );
   }
 

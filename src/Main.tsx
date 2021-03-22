@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
 import * as PIXI from "pixi.js";
 
 import ConfigModal from "./components/ConfigModal";
@@ -14,8 +13,11 @@ import { Parameter } from "./parameter";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
+
   const [initialState, setInitialState] = useState<PIXI.Point[][]>([]);
   const [communityCount, setCommunityCount] = useState(4);
+  const [communitySize, setCommunitySize] = useState(350);
+
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
   );
@@ -74,15 +76,20 @@ function Main() {
   }, [communityCount, selectedCommunity]);
 
   useEffect(() => {
-    const newLayout = layout(window.innerWidth, 350, 350, communityCount);
+    const newLayout = layout(
+      window.innerWidth,
+      communitySize,
+      communitySize,
+      communityCount
+    );
     const newComms = newLayout.map((l, i) => new Community(l, i + 1));
 
-    for (let i = 0; i < Math.min(communityCount, comms.length); i++) {
-      gsap.to(comms[i], {
-        x: newLayout[i].x,
-        y: newLayout[i].y,
-        duration: 0.2,
-      });
+    let i = 0;
+    for (; i < Math.min(communityCount, comms.length); i++) {
+      comms[i].x = newLayout[i].x;
+      comms[i].y = newLayout[i].y;
+      comms[i].rect = newLayout[i];
+
       newComms[i] = comms[i];
     }
 
@@ -98,7 +105,7 @@ function Main() {
     newComms.map((c) => c.bindOnSelect(onSelectCommunity));
     setComms(newComms);
     // eslint-disable-next-line
-  }, [communityCount]);
+  }, [communityCount, communitySize]);
 
   function onAddPopulation(n: number, c?: Community) {
     if (c === undefined) {
@@ -180,6 +187,8 @@ function Main() {
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
         onChangeCommunityCount={(v) => setCommunityCount(v)}
+        communitySize={communitySize}
+        onChangeCommunitySize={(v) => setCommunitySize(v)}
         onAddPopulation={onAddPopulation}
         onRemovePopulation={onRemovePopulation}
         hidden={configHidden}

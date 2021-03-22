@@ -111,7 +111,6 @@ export default function EventModal({
           </PropertyName>
           <PropertySetting>
             <Slider
-              marks
               min={0.1}
               max={10}
               step={0.1}
