@@ -166,8 +166,6 @@ function Main() {
   }
 
   function onEvent({ randomlyInfect }: Parameter) {
-    console.log(comms);
-
     const wholePopulation = [];
     for (const comm of comms) {
       wholePopulation.push(...comm.population);
