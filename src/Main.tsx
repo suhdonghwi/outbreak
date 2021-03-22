@@ -17,6 +17,7 @@ function Main() {
   const [initialState, setInitialState] = useState<PIXI.Point[][]>([]);
   const [communityCount, setCommunityCount] = useState(4);
   const [defaultCommunitySize, setDefaultCommunitySize] = useState(350);
+  const [communitySizes, setCommunitySizes] = useState<number[]>([]);
 
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
@@ -28,6 +29,11 @@ function Main() {
 
   const commsRef = useRef<Community[]>();
   commsRef.current = comms;
+
+  useEffect(() => {
+    const sizes = Array(communityCount).fill(defaultCommunitySize);
+    setCommunitySizes(sizes);
+  }, [communityCount, defaultCommunitySize]);
 
   useEffect(() => {
     let migrateCounter = 0;
@@ -76,12 +82,7 @@ function Main() {
   }, [communityCount, selectedCommunity]);
 
   useEffect(() => {
-    const newLayout = layout(
-      window.innerWidth,
-      defaultCommunitySize,
-      defaultCommunitySize,
-      communityCount
-    );
+    const newLayout = layout(window.innerWidth, communitySizes, communityCount);
     const newComms = newLayout.map((l, i) => new Community(l, i + 1));
 
     let i = 0;
@@ -105,7 +106,7 @@ function Main() {
     newComms.map((c) => c.bindOnSelect(onSelectCommunity));
     setComms(newComms);
     // eslint-disable-next-line
-  }, [communityCount, defaultCommunitySize]);
+  }, [communityCount, communitySizes]);
 
   function onAddPopulation(n: number, c?: Community) {
     if (c === undefined) {
@@ -186,6 +187,11 @@ function Main() {
         communityCount={communityCount}
         onChangeCommunityCount={(v) => setCommunityCount(v)}
         defaultCommunitySize={defaultCommunitySize}
+        communitySizes={communitySizes}
+        onChangeCommunitySize={(i, v) => {
+          communitySizes[i] = v;
+          setCommunitySizes([...communitySizes]);
+        }}
         onChangeDefaultCommunitySize={(v) => setDefaultCommunitySize(v)}
         onAddPopulation={onAddPopulation}
         onRemovePopulation={onRemovePopulation}

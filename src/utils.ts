@@ -10,16 +10,16 @@ export function randomInteger(min: number, max: number): number {
 
 export function layout(
   containerWidth: number,
-  communityWidth: number,
-  communityHeight: number,
+  communitySizes: number[],
   count: number
 ): PIXI.Rectangle[] {
   const topDownMargin = 100,
     gap = 60;
 
   const cols = Math.ceil(Math.sqrt(count));
+  const maxSize = Math.max(...communitySizes);
 
-  const delta = (containerWidth - ((communityWidth + gap) * cols - gap)) / 2,
+  const delta = (containerWidth - ((maxSize + gap) * cols - gap)) / 2,
     result = [];
   for (let i = 0; i < count; i++) {
     const currentRow = Math.floor(i / cols),
@@ -27,10 +27,10 @@ export function layout(
 
     result.push(
       new PIXI.Rectangle(
-        (communityWidth + gap) * currentCol + delta,
-        topDownMargin + (communityHeight + gap) * currentRow,
-        communityWidth,
-        communityHeight
+        (maxSize + gap) * currentCol + delta - communitySizes[i] / 2,
+        topDownMargin + (maxSize + gap) * currentRow - communitySizes[i] / 2,
+        communitySizes[i],
+        communitySizes[i]
       )
     );
   }

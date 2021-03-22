@@ -147,6 +147,9 @@ interface ConfigModalProps {
   defaultCommunitySize: number;
   onChangeDefaultCommunitySize: (n: number) => void;
 
+  communitySizes: number[];
+  onChangeCommunitySize: (index: number, size: number) => void;
+
   onFinish: () => void;
   hidden: boolean;
 }
@@ -179,7 +182,7 @@ function EnvSettings({
         <PropertyName>Default size of communities</PropertyName>
         <PropertySetting>
           <Slider
-            min={150}
+            min={100}
             max={1500}
             value={defaultCommunitySize}
             onChange={(v) => onChangeDefaultCommunitySize(v as number)}
@@ -215,6 +218,8 @@ function EnvSettings({
 function CommunitySettings({
   onAddPopulation,
   onRemovePopulation,
+  communitySizes,
+  onChangeCommunitySize,
   selectedCommunity,
 }: ConfigModalProps) {
   if (selectedCommunity === null) return null;
@@ -246,6 +251,20 @@ function CommunitySettings({
               {p}
             </UIButton>
           ))}
+        </PropertySetting>
+      </Property>
+
+      <Property>
+        <PropertyName>Size of a community</PropertyName>
+        <PropertySetting>
+          <Slider
+            min={100}
+            max={1500}
+            value={communitySizes[selectedCommunity.id - 1]}
+            onChange={(v) =>
+              onChangeCommunitySize(selectedCommunity.id - 1, v as number)
+            }
+          />
         </PropertySetting>
       </Property>
     </Settings>
