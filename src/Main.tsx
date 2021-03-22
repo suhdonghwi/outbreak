@@ -16,7 +16,7 @@ function Main() {
 
   const [initialState, setInitialState] = useState<PIXI.Point[][]>([]);
   const [communityCount, setCommunityCount] = useState(4);
-  const [communitySize, setCommunitySize] = useState(350);
+  const [defaultCommunitySize, setDefaultCommunitySize] = useState(350);
 
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
@@ -78,8 +78,8 @@ function Main() {
   useEffect(() => {
     const newLayout = layout(
       window.innerWidth,
-      communitySize,
-      communitySize,
+      defaultCommunitySize,
+      defaultCommunitySize,
       communityCount
     );
     const newComms = newLayout.map((l, i) => new Community(l, i + 1));
@@ -105,7 +105,7 @@ function Main() {
     newComms.map((c) => c.bindOnSelect(onSelectCommunity));
     setComms(newComms);
     // eslint-disable-next-line
-  }, [communityCount, communitySize]);
+  }, [communityCount, defaultCommunitySize]);
 
   function onAddPopulation(n: number, c?: Community) {
     if (c === undefined) {
@@ -185,8 +185,8 @@ function Main() {
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
         onChangeCommunityCount={(v) => setCommunityCount(v)}
-        communitySize={communitySize}
-        onChangeCommunitySize={(v) => setCommunitySize(v)}
+        defaultCommunitySize={defaultCommunitySize}
+        onChangeDefaultCommunitySize={(v) => setDefaultCommunitySize(v)}
         onAddPopulation={onAddPopulation}
         onRemovePopulation={onRemovePopulation}
         hidden={configHidden}

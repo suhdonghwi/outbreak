@@ -144,8 +144,8 @@ interface ConfigModalProps {
   communityCount: number;
   onChangeCommunityCount: (n: number) => void;
 
-  communitySize: number;
-  onChangeCommunitySize: (n: number) => void;
+  defaultCommunitySize: number;
+  onChangeDefaultCommunitySize: (n: number) => void;
 
   onFinish: () => void;
   hidden: boolean;
@@ -156,8 +156,8 @@ const populationNumbers = [1, 5, 10, 50, 100];
 function EnvSettings({
   communityCount,
   onChangeCommunityCount,
-  communitySize,
-  onChangeCommunitySize,
+  defaultCommunitySize,
+  onChangeDefaultCommunitySize,
   onAddPopulation,
   onRemovePopulation,
 }: ConfigModalProps) {
@@ -181,8 +181,8 @@ function EnvSettings({
           <Slider
             min={150}
             max={1500}
-            value={communitySize}
-            onChange={(v) => onChangeCommunitySize(v as number)}
+            value={defaultCommunitySize}
+            onChange={(v) => onChangeDefaultCommunitySize(v as number)}
           />
         </PropertySetting>
       </Property>

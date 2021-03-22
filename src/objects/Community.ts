@@ -201,7 +201,7 @@ export default class Community extends PIXI.Container {
 
   set selected(v: boolean) {
     if (v) {
-      this._overlay.alpha = 0.9;
+      this._overlay.alpha = 0.8;
     } else {
       this._overlay.alpha = 0;
     }
