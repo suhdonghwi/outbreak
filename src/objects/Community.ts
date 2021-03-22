@@ -54,11 +54,12 @@ export default class Community extends PIXI.Container {
 
     this._border = new PIXI.Graphics();
     this.draw();
+    this._border.zIndex = 2;
     this.addChild(this._border);
 
     this._overlay = new SettingsOverlay(this._sizeRect);
     this._overlay.alpha = 0;
-    this._overlay.zIndex = -1;
+    this._overlay.zIndex = 1;
     this.addChild(this._overlay);
 
     this.interactive = true;
@@ -113,6 +114,11 @@ export default class Community extends PIXI.Container {
   }
 
   set rect(rect: PIXI.Rectangle) {
+    for (const person of this.population) {
+      person.x *= rect.width / this._sizeRect.width;
+      person.y *= rect.height / this._sizeRect.height;
+    }
+
     this._sizeRect.width = rect.width;
     this._sizeRect.height = rect.height;
 

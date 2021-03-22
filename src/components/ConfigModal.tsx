@@ -168,7 +168,7 @@ function EnvSettings({
         <PropertySetting>
           <Slider
             min={1}
-            max={25}
+            max={49}
             value={communityCount}
             onChange={(v) => onChangeCommunityCount(v as number)}
           />
