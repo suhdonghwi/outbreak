@@ -19,6 +19,7 @@ import {
   PropertySetting,
 } from "./Config";
 import Button from "./Button";
+import { useForceUpdate } from "../utils";
 
 const Container = styled.div`
   position: absolute;
@@ -150,6 +151,8 @@ interface ConfigModalProps {
   communitySizes: number[];
   onChangeCommunitySize: (index: number, size: number) => void;
 
+  onChangePopularity: (index: number, p: number) => void;
+
   onFinish: () => void;
   hidden: boolean;
 }
@@ -220,8 +223,11 @@ function CommunitySettings({
   onRemovePopulation,
   communitySizes,
   onChangeCommunitySize,
+  onChangePopularity,
   selectedCommunity,
 }: ConfigModalProps) {
+  const forceUpdate = useForceUpdate();
+
   if (selectedCommunity === null) return null;
 
   return (
@@ -255,7 +261,7 @@ function CommunitySettings({
       </Property>
 
       <Property>
-        <PropertyName>Size of a community</PropertyName>
+        <PropertyName>Community size</PropertyName>
         <PropertySetting>
           <Slider
             min={100}
@@ -264,6 +270,21 @@ function CommunitySettings({
             onChange={(v) =>
               onChangeCommunitySize(selectedCommunity.id - 1, v as number)
             }
+          />
+        </PropertySetting>
+      </Property>
+
+      <Property>
+        <PropertyName>Community popularity</PropertyName>
+        <PropertySetting>
+          <Slider
+            min={1}
+            max={20}
+            value={selectedCommunity.popularity}
+            onChange={(v) => {
+              onChangePopularity(selectedCommunity.id - 1, v as number);
+              forceUpdate();
+            }}
           />
         </PropertySetting>
       </Property>

@@ -19,6 +19,7 @@ export default class Community extends PIXI.Container {
 
   private _sizeRect: PIXI.Rectangle;
   private _overlay: SettingsOverlay;
+  private _popularity: number;
 
   readonly offset = borderWidth + personRadius;
 
@@ -44,6 +45,7 @@ export default class Community extends PIXI.Container {
 
     this._selected = false;
     this._population = [];
+    this._popularity = 1;
     this._id = id;
 
     this.sortableChildren = true;
@@ -197,6 +199,14 @@ export default class Community extends PIXI.Container {
       },
       duration: 1,
     });
+  }
+
+  get popularity(): number {
+    return this._popularity;
+  }
+
+  set popularity(v: number) {
+    this._popularity = v;
   }
 
   set selected(v: boolean) {

@@ -4,7 +4,7 @@ import * as PIXI from "pixi.js";
 import ConfigModal from "./components/ConfigModal";
 import Simulator from "./components/Simulator";
 import Community from "./objects/Community";
-import { layout, randomInteger } from "./utils";
+import roulette, { layout, randomInteger } from "./utils";
 import app from "./App";
 import Timeline from "./components/Timeline";
 import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
@@ -53,20 +53,26 @@ function Main() {
             .reduce((a, b) => a + b);
           if (sum === 0) return;
 
+          const popularities = comms.map((c) => c.popularity);
+          let comm2 = roulette(popularities);
           let comm1;
-          do {
-            comm1 = randomInteger(0, comms.length - 1);
-          } while (comms[comm1].countNonMigrating() === 0);
+
+          if (sum - comms[comm2].countNonMigrating() === 0) {
+            comm1 = comm2;
+
+            do {
+              comm2 = randomInteger(0, comms.length - 1);
+            } while (comm1 === comm2);
+          } else {
+            do {
+              comm1 = randomInteger(0, comms.length - 1);
+            } while (comm2 === comm1 || comms[comm1].countNonMigrating() === 0);
+          }
 
           let index;
           do {
             index = randomInteger(0, comms[comm1].population.length - 1);
           } while (comms[comm1].population[index].migrating);
-
-          let comm2;
-          do {
-            comm2 = randomInteger(0, comms.length - 1);
-          } while (comm1 === comm2);
 
           comms[comm1].migrate(index, comms[comm2]);
           migrateCounter = 0;
@@ -185,18 +191,26 @@ function Main() {
       <ConfigModal
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
+        // ---
         onChangeCommunityCount={(v) => setCommunityCount(v)}
         defaultCommunitySize={defaultCommunitySize}
+        // ---
         communitySizes={communitySizes}
         onChangeCommunitySize={(i, v) => {
           communitySizes[i] = v;
           setCommunitySizes([...communitySizes]);
         }}
         onChangeDefaultCommunitySize={(v) => setDefaultCommunitySize(v)}
+        // ---
+        onChangePopularity={(i, v) => {
+          comms[i].popularity = v;
+          setComms(comms);
+        }}
+        // ---
         onAddPopulation={onAddPopulation}
         onRemovePopulation={onRemovePopulation}
-        hidden={configHidden}
         onFinish={onFinishEnvSetting}
+        hidden={configHidden}
       />
       <Timeline
         hidden={!configHidden}
