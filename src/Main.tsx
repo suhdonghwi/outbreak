@@ -10,9 +10,11 @@ import Timeline from "./components/Timeline";
 import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
 import { getParameterState } from "./stores/ParameterStore";
 import { Parameter } from "./parameter";
+import Person from "./objects/Person";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
+  const [wholePopulation, setWholePopulation] = useState<Person[]>([]);
 
   const [initialState, setInitialState] = useState<PIXI.Point[][]>([]);
   const [communityCount, setCommunityCount] = useState(4);
@@ -139,6 +141,7 @@ function Main() {
       comm.population.map((p) => p.position.clone())
     );
     setInitialState(state);
+    setWholePopulation(comms.flatMap((c) => c.population));
 
     setSimulatorState({ status: "paused" });
     for (const comm of comms) {
@@ -173,11 +176,6 @@ function Main() {
   }
 
   function onEvent({ randomlyInfect }: Parameter) {
-    const wholePopulation = [];
-    for (const comm of comms) {
-      wholePopulation.push(...comm.population);
-    }
-
     for (let i = 0; i < randomlyInfect; i++) {
       const person =
         wholePopulation[randomInteger(0, wholePopulation.length - 1)];
