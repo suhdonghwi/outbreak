@@ -11,4 +11,6 @@ const app = new PIXI.Application({
   resizeTo: window,
 });
 
+app.ticker.speed = 1;
+
 export default app;

@@ -157,8 +157,8 @@ export default function EventModal({
           </PropertyName>
           <PropertySetting>
             <Slider
-              min={1}
-              max={10}
+              min={0.5}
+              max={30}
               value={value.killTimer}
               step={0.1}
               onChange={(v) => onChange({ ...value, killTimer: v as number })}

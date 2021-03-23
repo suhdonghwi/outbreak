@@ -33,7 +33,7 @@ export default class Community extends PIXI.Container {
       if (
         distance(person.position, other.position) <=
           infectCircleRadius + personRadius &&
-        Math.random() < infectProbability * 0.001
+        Math.random() < infectProbability * 0.01
       ) {
         other.status = "infected";
       }
@@ -78,9 +78,11 @@ export default class Community extends PIXI.Container {
         gsap.to(this._overlay, { alpha: 0, duration });
     });
 
-    app.ticker.add(() => {
+    let infectTimer = 0;
+    app.ticker.add((delta) => {
       if (getSimulatorState().status !== "playing") return;
 
+      infectTimer += delta;
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
 
@@ -102,8 +104,10 @@ export default class Community extends PIXI.Container {
           person.angle = -person.angle;
         }
 
-        if (person.status === "infected") {
+        if (infectTimer >= 1 && person.status === "infected") {
+          console.log("satisfied");
           this.infectOther(person);
+          infectTimer = 0;
         }
       }
     });
