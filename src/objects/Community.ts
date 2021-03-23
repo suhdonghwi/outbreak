@@ -197,7 +197,7 @@ export default class Community extends PIXI.Container {
           person.migrating = false;
         }
       },
-      duration: 1,
+      duration: 0.5,
     });
   }
 
