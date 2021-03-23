@@ -10,7 +10,7 @@ import {
   Property,
   PropertyName,
   PropertySetting,
-} from "./Config";
+} from "./ConfigStyles";
 import Slider from "./Slider";
 
 const Modal = styled(BlurBox)`
