@@ -63,7 +63,7 @@ export default function ConfigModal(props: ConfigModalProps) {
             <FaArrowRight style={{ marginLeft: "0.4rem" }} />
           </MenuButton>
         </Header>
-        <Body>
+        <Body className={collapse ? "collapse" : ""}>
           <Title>
             <FaGlobeAmericas />
             Environment settings

@@ -42,7 +42,6 @@ export const ConfigBox = styled(BlurBox)`
   flex-direction: column;
 
   height: 100%;
-  overflow: auto;
 
   pointer-events: all;
   transition: height 0.4s;
@@ -57,8 +56,6 @@ export const Header = styled.header`
   align-items: center;
   min-height: 3rem;
   padding: 0 1.5rem;
-
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
 
   *:last-child {
     margin-left: auto;
@@ -97,6 +94,15 @@ export const Body = styled.div`
 
   padding: 1.7rem 2rem;
   box-sizing: border-box;
+
+  overflow: auto;
+
+  transition: all 0.3s;
+
+  &.collapse {
+    opacity: 0;
+    transform: scale(0.9);
+  }
 `;
 
 export const UIButton = styled(Button)`
