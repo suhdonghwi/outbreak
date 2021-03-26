@@ -3,9 +3,9 @@ import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
+  FaChartArea,
   FaPause,
   FaPlay,
-  FaPlus,
   FaRedo,
 } from "react-icons/fa";
 import defaultParameter, { Parameter } from "../parameter";
@@ -230,7 +230,7 @@ export default function Timeline({
           </ControlButton>
 
           <ControlButton>
-            <FaPlus />
+            <FaChartArea />
           </ControlButton>
         </Buttons>
         <BarContainer>

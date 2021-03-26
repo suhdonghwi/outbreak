@@ -31,7 +31,8 @@ export default class SettingsOverlay extends PIXI.Graphics {
     this.endFill();
 
     this._text.style.fontSize = this._rect.width / 5;
-    this._text.x = this._rect.width / 2 - this._text.width / 2;
-    this._text.y = this._rect.height / 2 - this._text.height / 2;
+
+    this._text.x = this._rect.width / 2 - 35;
+    this._text.y = this._rect.height / 2 - 35;
   }
 }

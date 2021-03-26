@@ -20,8 +20,8 @@ const Modal = styled(BlurBox)`
   padding: 1.7rem 2rem;
   width: 25rem;
   height: 23rem;
-  overflow: auto;
   box-sizing: border-box;
+  overflow: auto;
 
   transform: translate(-50%, -50%);
   transition: opacity 0.1s;
@@ -189,7 +189,6 @@ export default function EventModal({
         {isEdit && day !== 0 && (
           <UIButton onClick={() => onRemove(day!)}>Remove</UIButton>
         )}
-        <UIButton onClick={onCancel}>Cancel</UIButton>
       </Buttons>
     </Modal>
   );
