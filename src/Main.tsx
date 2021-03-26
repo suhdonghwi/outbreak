@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as PIXI from "pixi.js";
 
-import ConfigModal from "./components/ConfigModal";
+import ConfigModal from "./components/SideModal";
 import Simulator from "./components/Simulator";
 import Community from "./objects/Community";
 import roulette, { layout, randomInteger } from "./utils";
