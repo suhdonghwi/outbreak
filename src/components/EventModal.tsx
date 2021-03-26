@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { FaRegClock } from "react-icons/fa";
+import { FaRegClock, FaTimes } from "react-icons/fa";
 import { Parameter } from "../parameter";
 
 import BlurBox from "./BlurBox";
@@ -62,6 +62,20 @@ const UIButton = styled(Button)`
   }
 `;
 
+const CloseButton = styled.button`
+  cursor: pointer;
+
+  background: none;
+  border: none;
+  appearance: none;
+
+  position: absolute;
+  top: 1.7rem;
+  right: 1.5rem;
+  font-size: 1.2rem;
+  color: #fa5252;
+`;
+
 interface EventModalProps {
   value: Parameter;
   onChange: (e: Parameter) => void;
@@ -88,6 +102,9 @@ export default function EventModal({
         <FaRegClock />
         {isEdit ? "Edit" : "Add"} event for day {day}
       </Title>
+      <CloseButton onClick={onCancel}>
+        <FaTimes />
+      </CloseButton>
       <EventSettings>
         <Property>
           <PropertyName>
