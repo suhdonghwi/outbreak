@@ -16,6 +16,7 @@ export default class SettingsOverlay extends PIXI.Graphics {
       fontSize: 70,
     });
     const text = new PIXI.Text("🛠️", textStyle);
+    text.anchor.set(0.5);
     text.resolution = 1.5;
 
     this._text = text;
@@ -32,7 +33,7 @@ export default class SettingsOverlay extends PIXI.Graphics {
 
     this._text.style.fontSize = this._rect.width / 5;
 
-    this._text.x = this._rect.width / 2 - 35;
-    this._text.y = this._rect.height / 2 - 35;
+    this._text.x = this._rect.width / 2;
+    this._text.y = this._rect.height / 2;
   }
 }
