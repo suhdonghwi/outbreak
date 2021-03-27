@@ -2,7 +2,8 @@ import { FaUsers, FaGlobeAmericas, FaArrowRight } from "react-icons/fa";
 
 import Community from "../../objects/Community";
 import { Title } from "../ConfigStyles";
-import { UnselectedBox, MenuButton } from "./styles";
+import { UnselectedBox } from "./styles";
+import { MenuButton } from "../Modal";
 import Modal from "../Modal";
 
 import { CommunitySettings } from "./CommunitySettings";
