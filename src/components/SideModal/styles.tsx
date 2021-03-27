@@ -21,3 +21,37 @@ export const UnselectedBox = styled.div`
   text-align: center;
   padding: 1.2rem;
 `;
+
+export const Container = styled.div`
+  position: absolute;
+  top: 50%;
+  right: 2%;
+
+  height: 90%;
+  width: 24rem;
+
+  box-sizing: border-box;
+  pointer-events: none;
+
+  transform: translateY(-50%);
+  transition: all 0.5s;
+
+  &.hidden {
+    right: 0;
+    transform: translate(100%, -50%);
+
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 534px) {
+    right: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 95%;
+  }
+
+  @media screen and (max-width: 420px) {
+    width: 90%;
+  }
+`;

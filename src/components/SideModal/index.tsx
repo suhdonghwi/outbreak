@@ -2,7 +2,7 @@ import { FaUsers, FaGlobeAmericas, FaArrowRight } from "react-icons/fa";
 
 import Community from "../../objects/Community";
 import { Title } from "../ConfigStyles";
-import { UnselectedBox } from "./styles";
+import { UnselectedBox, Container } from "./styles";
 import { MenuButton } from "../Modal";
 import Modal from "../Modal";
 
@@ -35,30 +35,31 @@ export default function ConfigModal(props: ConfigModalProps) {
   const { selectedCommunity, onFinish, hidden } = props;
 
   return (
-    <Modal
-      sideComponent={
-        <MenuButton style={{ fontSize: "1.1rem" }} onClick={onFinish}>
-          Next
-          <FaArrowRight style={{ marginLeft: "0.4rem" }} />
-        </MenuButton>
-      }
-      hidden={hidden}
-    >
-      <Title>
-        <FaGlobeAmericas />
-        Environment settings
-      </Title>
-      <EnvironmentSettings {...props} />
+    <Container className={hidden ? "hidden" : ""}>
+      <Modal
+        sideComponent={
+          <MenuButton style={{ fontSize: "1.1rem" }} onClick={onFinish}>
+            Next
+            <FaArrowRight style={{ marginLeft: "0.4rem" }} />
+          </MenuButton>
+        }
+      >
+        <Title>
+          <FaGlobeAmericas />
+          Environment settings
+        </Title>
+        <EnvironmentSettings {...props} />
 
-      <Title>
-        <FaUsers />
-        Community {selectedCommunity && selectedCommunity.id} settings
-      </Title>
-      {selectedCommunity !== null ? (
-        <CommunitySettings {...props} />
-      ) : (
-        <UnselectedBox>Click a community to configure</UnselectedBox>
-      )}
-    </Modal>
+        <Title>
+          <FaUsers />
+          Community {selectedCommunity && selectedCommunity.id} settings
+        </Title>
+        {selectedCommunity !== null ? (
+          <CommunitySettings {...props} />
+        ) : (
+          <UnselectedBox>Click a community to configure</UnselectedBox>
+        )}
+      </Modal>
+    </Container>
   );
 }

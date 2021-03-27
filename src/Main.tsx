@@ -11,6 +11,7 @@ import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
 import { getParameterState } from "./stores/ParameterStore";
 import { Parameter } from "./parameter";
 import Person from "./objects/Person";
+import Dashboard from "./components/Dashboard";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -186,6 +187,7 @@ function Main() {
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
+      <Dashboard />
       <ConfigModal
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
