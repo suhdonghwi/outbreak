@@ -3,11 +3,10 @@ import { FaUsers, FaGlobeAmericas, FaArrowRight } from "react-icons/fa";
 import Community from "../../objects/Community";
 import { Title } from "../ConfigStyles";
 import { UnselectedBox, MenuButton } from "./styles";
-import Modal from "./Modal";
+import Modal from "../Modal";
 
 import { CommunitySettings } from "./CommunitySettings";
 import { EnvironmentSettings } from "./EnvironmentSettings";
-import React from "react";
 
 export interface ConfigModalProps {
   onAddPopulation: (n: number, c?: Community) => void;
