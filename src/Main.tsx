@@ -117,6 +117,40 @@ function Main() {
     // eslint-disable-next-line
   }, [communityCount, communitySizes]);
 
+  useEffect(() => {
+    let dataTimer = 0;
+    app.ticker.add((delta) => {
+      if (getSimulatorState().status !== "playing") return;
+      dataTimer += delta / 60;
+
+      if (dataTimer > 0.5) {
+        let susceptible = 0,
+          infected = 0,
+          removed = 0;
+
+        if (!commsRef.current) return;
+        for (const comm of commsRef.current) {
+          for (const person of comm.population) {
+            switch (person.status) {
+              case "normal":
+                susceptible++;
+                break;
+              case "infected":
+                infected++;
+                break;
+              case "removed":
+                removed++;
+                break;
+            }
+          }
+        }
+
+        console.log(susceptible, infected, removed);
+        dataTimer = 0;
+      }
+    });
+  }, []);
+
   function onAddPopulation(n: number, c?: Community) {
     if (c === undefined) {
       for (const comm of comms) {

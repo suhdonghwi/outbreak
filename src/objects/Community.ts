@@ -105,7 +105,6 @@ export default class Community extends PIXI.Container {
         }
 
         if (infectTimer >= 1 && person.status === "infected") {
-          console.log("satisfied");
           this.infectOther(person);
           infectTimer = 0;
         }
