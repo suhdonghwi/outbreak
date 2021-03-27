@@ -78,11 +78,9 @@ export default class Community extends PIXI.Container {
         gsap.to(this._overlay, { alpha: 0, duration });
     });
 
-    let infectTimer = 0;
-    app.ticker.add((delta) => {
+    app.ticker.add(() => {
       if (getSimulatorState().status !== "playing") return;
 
-      infectTimer += delta;
       for (let i = 0; i < this.population.length; i++) {
         const person = this.population[i];
 
@@ -104,9 +102,8 @@ export default class Community extends PIXI.Container {
           person.angle = -person.angle;
         }
 
-        if (infectTimer >= 1 && person.status === "infected") {
+        if (person.status === "infected") {
           this.infectOther(person);
-          infectTimer = 0;
         }
       }
     });

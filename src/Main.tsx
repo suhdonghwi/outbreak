@@ -11,7 +11,7 @@ import { getSimulatorState, setSimulatorState } from "./stores/SimulatorStore";
 import { getParameterState } from "./stores/ParameterStore";
 import { Parameter } from "./parameter";
 import Person from "./objects/Person";
-import Dashboard from "./components/Dashboard";
+import Dashboard, { Datum } from "./components/Dashboard";
 
 function Main() {
   const [comms, setComms] = useState<Community[]>([]);
@@ -21,6 +21,12 @@ function Main() {
   const [communityCount, setCommunityCount] = useState(4);
   const [defaultCommunitySize, setDefaultCommunitySize] = useState(350);
   const [communitySizes, setCommunitySizes] = useState<number[]>([]);
+
+  const [sir, setSIR] = useState<{ s: Datum[]; i: Datum[]; r: Datum[] }>({
+    s: [],
+    i: [],
+    r: [],
+  });
 
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(
     null
@@ -32,6 +38,9 @@ function Main() {
 
   const commsRef = useRef<Community[]>();
   commsRef.current = comms;
+
+  const dayRef = useRef<number>();
+  dayRef.current = day;
 
   useEffect(() => {
     const sizes = Array(communityCount).fill(defaultCommunitySize);
@@ -118,11 +127,11 @@ function Main() {
   }, [communityCount, communitySizes]);
 
   useEffect(() => {
-    let dataTimer = 0;
+    let dataTimer = 0.5;
     app.ticker.add((delta) => {
-      if (getSimulatorState().status !== "playing") return;
-      dataTimer += delta / 60;
+      if (getSimulatorState().status !== "playing" || !dayRef.current) return;
 
+      dataTimer += delta / 60;
       if (dataTimer > 0.5) {
         let susceptible = 0,
           infected = 0,
@@ -145,7 +154,13 @@ function Main() {
           }
         }
 
-        console.log(susceptible, infected, removed);
+        setSIR((p) => {
+          p.s.push({ x: dayRef.current!, y: susceptible });
+          p.i.push({ x: dayRef.current!, y: infected });
+          p.r.push({ x: dayRef.current!, y: removed });
+
+          return p;
+        });
         dataTimer = 0;
       }
     });
@@ -205,6 +220,7 @@ function Main() {
     }
 
     setDay(0);
+    setSIR({ s: [], i: [], r: [] });
     setSimulatorState({ status: "configure" });
     setConfigHidden(false);
     setPlaying(false);
@@ -221,7 +237,7 @@ function Main() {
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
-      <Dashboard />
+      <Dashboard susceptible={sir.s} infected={sir.i} removed={sir.r} />
       <ConfigModal
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
