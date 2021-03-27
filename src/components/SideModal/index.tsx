@@ -1,12 +1,13 @@
-import { FaUsers, FaGlobeAmericas } from "react-icons/fa";
+import { FaUsers, FaGlobeAmericas, FaArrowRight } from "react-icons/fa";
 
 import Community from "../../objects/Community";
 import { Title } from "../ConfigStyles";
-import { UnselectedBox } from "./styles";
+import { UnselectedBox, MenuButton } from "./styles";
 import Modal from "./Modal";
 
 import { CommunitySettings } from "./CommunitySettings";
 import { EnvironmentSettings } from "./EnvironmentSettings";
+import React from "react";
 
 export interface ConfigModalProps {
   onAddPopulation: (n: number, c?: Community) => void;
@@ -34,7 +35,15 @@ export default function ConfigModal(props: ConfigModalProps) {
   const { selectedCommunity, onFinish, hidden } = props;
 
   return (
-    <Modal onNext={onFinish} hidden={hidden}>
+    <Modal
+      sideComponent={
+        <MenuButton style={{ fontSize: "1.1rem" }} onClick={onFinish}>
+          Next
+          <FaArrowRight style={{ marginLeft: "0.4rem" }} />
+        </MenuButton>
+      }
+      hidden={hidden}
+    >
       <Title>
         <FaGlobeAmericas />
         Environment settings

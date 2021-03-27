@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 
-import { FaCaretDown, FaArrowRight } from "react-icons/fa";
+import { FaCaretDown } from "react-icons/fa";
 
 import { Body, ConfigBox, Container, Header, MenuButton } from "./styles";
 
 export interface ConfigModalProps {
   children: React.ReactNode;
-  onNext: () => void;
+  sideComponent: React.ReactNode;
   hidden: boolean;
 }
 
 export const populationNumbers = [1, 5, 10, 50, 100];
 
-export default function Modal({ onNext, hidden, children }: ConfigModalProps) {
+export default function Modal({
+  sideComponent,
+  hidden,
+  children,
+}: ConfigModalProps) {
   const [collapse, setCollapse] = useState(false);
 
   return (
@@ -26,10 +30,7 @@ export default function Modal({ onNext, hidden, children }: ConfigModalProps) {
             <FaCaretDown />
           </MenuButton>
 
-          <MenuButton style={{ fontSize: "1.1rem" }} onClick={onNext}>
-            Next
-            <FaArrowRight style={{ marginLeft: "0.4rem" }} />
-          </MenuButton>
+          {sideComponent}
         </Header>
         <Body className={collapse ? "collapse" : ""}>{children}</Body>
       </ConfigBox>
