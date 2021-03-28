@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   FaArrowLeft,
   FaArrowRight,
-  FaChartArea,
   FaPause,
   FaPlay,
   FaRedo,
@@ -227,10 +226,6 @@ export default function Timeline({
 
           <ControlButton onClick={() => setFrom(from + (showingPoints - 1))}>
             <FaArrowRight />
-          </ControlButton>
-
-          <ControlButton>
-            <FaChartArea />
           </ControlButton>
         </Buttons>
         <BarContainer>

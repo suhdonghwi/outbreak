@@ -37,6 +37,7 @@ export default function ConfigModal(props: ConfigModalProps) {
   return (
     <Container className={hidden ? "hidden" : ""}>
       <Modal
+        draggable={false}
         sideComponent={
           <MenuButton style={{ fontSize: "1.1rem" }} onClick={onFinish}>
             Next

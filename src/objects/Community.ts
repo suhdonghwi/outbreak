@@ -33,7 +33,7 @@ export default class Community extends PIXI.Container {
       if (
         distance(person.position, other.position) <=
           infectCircleRadius + personRadius &&
-        Math.random() < infectProbability * 0.01
+        Math.random() <= infectProbability * 0.01
       ) {
         other.status = "infected";
       }

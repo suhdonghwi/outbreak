@@ -159,7 +159,7 @@ export default function EventModal({
           </PropertyName>
           <PropertySetting>
             <Slider
-              min={1}
+              min={0.1}
               max={30}
               value={value.infectProbability}
               step={0.1}

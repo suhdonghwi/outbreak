@@ -1,18 +1,38 @@
 import styled from "@emotion/styled";
 import { ResponsiveLineCanvas } from "@nivo/line";
-import { useState } from "react";
-import { useDrag } from "react-use-gesture";
 
 import Modal from "./Modal";
 
 const Container = styled.div`
+  cursor: grab;
+
   position: absolute;
   top: 1rem;
   left: 1rem;
 
   width: 30rem;
   height: 25rem;
-  touch-action: none;
+
+  transition: opacity 0.3s;
+  pointer-events: none;
+
+  &.hidden {
+    opacity: 0;
+
+    * {
+      pointer-events: none;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 25rem;
+    height: 20rem;
+  }
+
+  @media screen and (max-width: 400px) {
+    width: 20rem;
+    height: 18rem;
+  }
 `;
 
 const Title = styled.h1`
@@ -51,26 +71,18 @@ interface DashboardProps {
   susceptible: Datum[];
   infected: Datum[];
   removed: Datum[];
+  hidden: boolean;
 }
 
 export default function Dashboard({
   susceptible,
   infected,
   removed,
+  hidden,
 }: DashboardProps) {
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-
-  const bind = useDrag(({ down, delta: [dx, dy] }) => {
-    if (down) {
-      setX((x) => x + dx);
-      setY((y) => y + dy);
-    }
-  });
-
   return (
-    <Container {...bind()} style={{ transform: `translate(${x}px, ${y}px)` }}>
-      <Modal sideComponent={<Title>Dashboard</Title>}>
+    <Container className={hidden ? "hidden" : ""}>
+      <Modal draggable sideComponent={<Title>Dashboard</Title>}>
         <ResponsiveLineCanvas
           data={[
             { id: "Susceptible", data: susceptible },
@@ -78,6 +90,7 @@ export default function Dashboard({
             { id: "Removed", data: removed },
           ]}
           colors={{ scheme: "nivo" }}
+          curve="monotoneY"
           enableGridX={false}
           enablePoints={false}
           enableSlices="x"
@@ -91,11 +104,14 @@ export default function Dashboard({
             },
           ]}
           xFormat=">-.2f"
-          margin={{ right: 100, bottom: 25 }}
-          theme={graphTheme}
           xScale={{ type: "linear" }}
+          margin={{ left: 30, right: 95, top: 20, bottom: 25 }}
+          theme={graphTheme}
           axisBottom={{
             format: ">-.2f",
+            tickValues: 4,
+          }}
+          axisLeft={{
             tickValues: 4,
           }}
         />

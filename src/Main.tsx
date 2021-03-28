@@ -237,7 +237,12 @@ function Main() {
   return (
     <div className="App">
       <Simulator app={app} communities={comms} />
-      <Dashboard susceptible={sir.s} infected={sir.i} removed={sir.r} />
+      <Dashboard
+        susceptible={sir.s}
+        infected={sir.i}
+        removed={sir.r}
+        hidden={!configHidden}
+      />
       <ConfigModal
         selectedCommunity={selectedCommunity}
         communityCount={communityCount}
